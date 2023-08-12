@@ -1,0 +1,25 @@
+.HomePage .container {
+  margin-left:auto;
+  margin-right: auto;
+
+}
+.HomePage img{
+  width:300px;
+  height:300px;
+  margin-top:10rem;
+}
+  .HomePage .row {
+    display: flex;
+    justify-content: center;
+  }
+  
+.HomePage .three.columns  {
+  display: flex;
+  justify-content: center
+}
+.HomePage h1{
+  font-family: Raleway;
+  text-align: center;
+  margin-bottom:10rem;
+  margin-top:4rem;
+}
