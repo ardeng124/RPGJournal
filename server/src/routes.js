@@ -1,7 +1,7 @@
 const express = require('express')
 const auth = require('./controllers/auth')
 const journal = require('./controllers/journal')
-const { requiresAuth } = require('express-openid-connect');
+
 
 const router = express.Router()
  
@@ -9,18 +9,12 @@ const router = express.Router()
 //   res.sendFile('index.html', {root: path.join(__dirname, '../../build/')});
 // });
 
-router.get('/', (req, res) => {
-  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out')
-});
-router.get('/profile', requiresAuth(), (req, res) => {
-  res.send(JSON.stringify(req.oidc.user));
-});
 router.get('/api/journal/:id', journal.getJournalEntry)
-router.get('/api/journal/',requiresAuth(),  (req, res) => {
-  journal.getJournalEntries(req,res)
-})
 
-router.get('/api/journal/',requiresAuth(),)
+router.get('/api/journal/', journal.getJournalEntries)
+router.post('/auth/login', auth.loginUser)
+router.post('/auth/register', auth.createUser)
+router.get('/api/auth/', auth.validate)
 
 
 module.exports = router 

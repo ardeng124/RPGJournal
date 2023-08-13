@@ -1,22 +1,19 @@
 import React,{useState, useEffect} from 'react'
-import logo from '../Icon.png';
+import logo from '../Icon2.png';
 import { useNavigate} from "react-router-dom"
-import { useAuth0 } from "@auth0/auth0-react";
-import LoginButton from '../components/LoginButton.js';
+import AxiosService from '../AxiosService';
+
 
 const HomePage = () => {
     const navigate = useNavigate()
-
     const [loggedIn, setLoggedIn] = useState(false)
-    const { user, isAuthenticated, isLoading } = useAuth0();
-
-    if (isLoading) {
-        return <h1>Loading ...</h1>;
-    }
-    if (isAuthenticated){
-        navigate("/Dashboard")
-    }
-
+    useEffect( () => {
+        AxiosService.validateUser().then(response => {
+            if (response == "valid") {
+                navigate('/dashboard')
+            } 
+        })
+    },[])
   return (
     <section className='HomePage'>
         <body>
@@ -30,15 +27,13 @@ const HomePage = () => {
                     <h1>RPG Journal</h1>
                 </div>
                 <div className='row'>
-
-                    <LoginButton></LoginButton>
-{/*                     
+                    
                     <div className='three columns'> 
-                        <button class="button-primary">Login</button>
+                        <button class="button-primary" onClick={() => navigate("/login")}>Login</button>
                     </div>
                     <div className='three columns'> 
-                        <button class="button-primary">Sign up</button>
-                    </div> */}
+                        <button class="button-primary" onClick={() => navigate("/signup")}>Sign up</button>
+                    </div>
                 </div>
                     
 

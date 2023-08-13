@@ -1,29 +1,61 @@
 const models = require('../models')
+const Util = require('./util')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
-/* Create a new session for a user */
-const createSession = async (request, response) => {
 
-    const session = new models.Session({
-        username: request.body.username
+const createUser = async(request, response)  => {
+    const body = request.body
+    const existingUser = await models.User.findOne({
+        "username":body.username
     })
-
-    const returned = await session.save()
-        .catch((err) => {
-            response.json({"status": "username taken"})
-        })
-
-    if (returned) {
-        if (session._id) {
-            response.json({
-                status: "success",
-                username: returned.username,
-                token: returned._id
-            })
-        }
+    if(existingUser){
+        return response.json({
+            error: 'username taken',
+            status: 409
+          })
     }
+    const passwordHash = await Util.hashPassword(body.password)
+    const user = new models.User ({
+        username: body.username, 
+        firstName: body.firstName, 
+        lastName: body.lastName, 
+        passwordHash: passwordHash, 
+        email:body.email,
+        entries:[]
+    })
+    const savedUser = await user.save()
+    const userForToken = {
+        username: savedUser.username,
+        id: user.id,
+    }
+    // generate a token for the registered user 
+    const token = jwt.sign(userForToken, process.env.SECRET)
+    response
+        .status(200)
+        .send({ token, username: user.username, name: user.name })
+}
+const getToken = (request) => {
+    const auhorisation = request.get('Authorization')
+    if (auhorisation && auhorisation.toLowerCase().startsWith('bearer ')) {
+        return auhorisation.substring(7)
+    }
+    return null
 }
 
-
+const validate = async (request, response) => {
+    const token = getToken(request)
+    try{
+        const decodedToken = jwt.verify(token, process.env.SECRET)
+        if (!decodedToken.id) {
+            return response.status(200).json({status:"unregistered"})
+        }else{
+            return  response.status(200).json({status:"success", id:decodedToken.id})
+        }
+    }catch(err){
+        return response.status(401).json({status:"unregistered"})
+    }
+}
 const getUser = async (request, response) => {
 
     const authHeader = request.get('Authorization')
@@ -44,23 +76,30 @@ const getUser = async (request, response) => {
     }
     response.json({status: "unregistered"}) 
 }
-
-/* 
- * validUser - check for a valid user via Authorization header
- *   return the username if found, false if not
-*/
-const validUser = async (request) => {
-    
-    const authHeader = request.get('Authorization')
-    if (authHeader && authHeader.toLowerCase().startsWith('basic ')) {
-        const token = authHeader.substring(6)        
-        const match = await models.Session.findOne({_id: token})  
-
-        if (match) {
-            return match._id
-        }
-    } 
-    return false
+const loginUser = async(request, response) => {
+    const {username, password} = request.body
+    const user = await models.User.findOne({username})
+    const passwordCorrect = user === null ? false : await bcrypt.compare(password, user.passwordHash)
+    if (!(user && passwordCorrect)) {
+        
+    }
+    if(!user || !passwordCorrect) {
+        response
+        .status(401)
+        .send({"error":"user does not exist or password incorrect"})
+        return
+    }
+    const userForToken = {
+        username: user.username,
+        id: user.id,
+    }
+    const token = jwt.sign(userForToken, process.env.SECRET)
+    response
+    .status(200)
+    .send({ token, username: user.username, name: user.name })
 }
 
-module.exports = { validUser, getUser, createSession }
+const getDecodedToken = (token) => {
+    return jwt.verify(token, process.env.SECRET)
+}
+module.exports = {getUser, loginUser,createUser, validate}
