@@ -17,9 +17,93 @@
   display: flex;
   justify-content: center
 }
+h1{
+  font-family: Raleway;
+}
 .HomePage h1{
   font-family: Raleway;
   text-align: center;
   margin-bottom:10rem;
   margin-top:4rem;
+}
+
+.sidebar {
+  height: 100%;
+  width: 0px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.Dashboard .hamburger {
+  width:50px;
+  height: 50px;
+  cursor: pointer;
+  margin-left:10px;
+
+}
+.logout-button{
+  background-color: rgb(14, 13, 13);
+  color: white ;
+  border-color: red;
+  margin: 5px;
+  bottom:0px;
+  top:90%;
+}
+.logoutbtnA {
+  position: absolute;
+  bottom:10%;
+}
+.Dashboard .topbar {
+  margin-top:20px;
+}
+
+.usrImg {
+  width:50px;
+  position:absolute;
+  left:15px;
+  top:15px;
+  border-radius: 50px;
+}
+.NotesTable{
+  width:80%;
+  margin:auto;
+  margin-top:50px;
+}
+.Page {
+  margin-left:0px;
+  transition: 0.5s;
+}
+.shrink {
+  transition: 0.5s;
+  margin-left:205px;
+}
+.JournalListItem{
+  width:80%;
 }

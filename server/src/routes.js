@@ -9,9 +9,5 @@ router.get('/', function(req, res) {
   res.sendFile('index.html', {root: path.join(__dirname, '../../build/')});
 });
 
-router.post('/auth/register', auth.createSession)
-
-router.get('/auth/', auth.getUser)
-
 
 module.exports = router 

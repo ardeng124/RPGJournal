@@ -6,6 +6,7 @@ import {
 
 
 import HomePage from "./screens/HomePage"
+import Dashboard from "./screens/Dashboard"
 
 
 function App() {
@@ -13,6 +14,8 @@ function App() {
   <Router>
     <Routes>
     <Route path="/" element={<HomePage />} />
+    <Route path="/dashboard" element={<Dashboard />} />
+
     </Routes>
     
   </Router>
