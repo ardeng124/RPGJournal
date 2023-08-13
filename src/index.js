@@ -13,6 +13,8 @@ root.render(
     authorizationParams={{
       redirect_uri: window.location.origin
     }}
+    audience="unique identifier"
+    scope="openid profile email"
   >
     <App />
   </Auth0Provider>,

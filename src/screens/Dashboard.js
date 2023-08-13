@@ -4,9 +4,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate} from "react-router-dom"
 import LogoutButton from '../components/LogoutButton';
 import JournalEntryListItem from '../components/JournalEntryListItem';
+import axios from 'axios';
+// import AxiosService from '../AxiosService';
 
 
 const Dashboard = () => {
+    const { getAccessTokenSilently } = useAuth0();
+
     const items = [
         {
           id: 1,
@@ -41,11 +45,26 @@ const Dashboard = () => {
         sidebarElement.current.style.width = "0";
         setShrink(false)
     }
-    useEffect(() => {   
-        setJournalItems(items)
-
-
-    },[])
+    const validateUser = async () => {
+        let token = await getAccessTokenSilently()
+        return token
+    }
+    useEffect(() => {
+        updateJournalEntries()
+    }, []);
+    
+    const updateJournalEntries = async () => {
+        try {
+            let token = await validateUser()
+            console.log(token)
+            const response = await axios.get("http://localhost:8102/api/journal", { headers: { "Authorization": `Bearer ${token}` } })
+            setJournalItems(response.data)
+            console.log(journalItems)
+        } catch (e){
+            console.log(e)
+            window.alert(e)
+        }
+    }
     if (isLoading) {
         return <h1>Loading ...</h1>;
     }
