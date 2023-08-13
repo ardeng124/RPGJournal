@@ -3,14 +3,9 @@ const auth = require('./auth')
 const verify = require('../jwtAuth')
 
 const getJournalEntries = async (request, response) => {
-    const authHeader = request.get('Authorization')
-    console.log(authHeader)
-    if (authHeader && authHeader.toLowerCase().startsWith('bearer ')) {
-        const token = authHeader.substring(6)
-        let verification = await verify.jwtCheck(token)
-        // console.log(verification)
-    }
-    const entries = await models.Journal.find({})
+    let user =request.oidc.user
+
+    const entries = await models.Journal.find({owner:user.sid})
         .sort('timestamp')
     response.json({entries})
 }

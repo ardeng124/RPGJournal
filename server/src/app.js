@@ -27,7 +27,7 @@ const { auth } = require('express-openid-connect');
 const configAuth = {
   authRequired: false,
   auth0Logout: true,
-  baseURL: 'http://localhost:3000',
+  baseURL: 'http://localhost:8102',
   clientID: '4itJLproEx75Uv48FH7WLCwzNaeQbCUa',
   issuerBaseURL: 'https://dev-ahyf2hi5h6vaqo21.au.auth0.com',
   secret: process.env.SECRET

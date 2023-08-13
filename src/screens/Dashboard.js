@@ -62,7 +62,7 @@ const Dashboard = () => {
             console.log(journalItems)
         } catch (e){
             console.log(e)
-            window.alert(e)
+
         }
     }
     if (isLoading) {

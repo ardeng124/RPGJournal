@@ -16,7 +16,11 @@ router.get('/profile', requiresAuth(), (req, res) => {
   res.send(JSON.stringify(req.oidc.user));
 });
 router.get('/api/journal/:id', journal.getJournalEntry)
-router.get('/api/journal/', journal.getJournalEntries)
+router.get('/api/journal/',requiresAuth(),  (req, res) => {
+  journal.getJournalEntries(req,res)
+})
+
+router.get('/api/journal/',requiresAuth(),)
 
 
 module.exports = router 
