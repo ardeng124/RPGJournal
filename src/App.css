@@ -17,9 +17,7 @@
   display: flex;
   justify-content: center
 }
-h1{
-  font-family: Raleway;
-}
+
 .HomePage h1{
   font-family: Raleway;
   text-align: center;
@@ -29,7 +27,7 @@ h1{
 
 .sidebar {
   height: 100%;
-  width: 0px;
+  width: 50px;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -37,12 +35,14 @@ h1{
   background-color: #111;
   overflow-x: hidden;
   transition: 0.5s;
-  padding-top: 60px;
+  padding-top: 100px;
 }
 
 .sidebar a {
+
   padding: 8px 8px 8px 32px;
   text-decoration: none;
+  margin-left: 20px;
   font-size: 25px;
   color: #818181;
   display: block;
@@ -60,13 +60,32 @@ h1{
   right: 25px;
   font-size: 36px;
   margin-left: 50px;
+  cursor: pointer;
 }
 
 .Dashboard .hamburger {
   width:50px;
   height: 50px;
   cursor: pointer;
-  margin-left:10px;
+  /* margin-left:10px; */
+  z-index: 999;
+  /* position: relative; */
+  filter: invert(100%);
+  left:0px;
+  position: absolute;
+
+}
+.Dashboard .sidebarIcon {
+  width:40px;
+  height: 40px;
+  cursor: pointer;
+  /* margin-left:10px; */
+  z-index: 999;
+  /* position: relative; */
+
+  left:0px;
+  position: absolute;
+  margin-left: 5px;
 
 }
 .logout-button{
@@ -76,6 +95,7 @@ h1{
   margin: 5px;
   bottom:0px;
   top:90%;
+  /* margin-left: -20px; */
 }
 .logoutbtnA {
   position: absolute;
@@ -107,4 +127,7 @@ h1{
 }
 .JournalListItem{
   width:80%;
+}
+.centerItems {
+  align-items: center;
 }

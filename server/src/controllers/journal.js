@@ -1,11 +1,9 @@
 const models = require('../models')
 const auth = require('./auth')
-const verify = require('../jwtAuth')
 
 const getJournalEntries = async (request, response) => {
-    let user =request.oidc.user
 
-    const entries = await models.Journal.find({owner:user.sid})
+    const entries = await models.Journal.find({})
         .sort('timestamp')
     response.json({entries})
 }

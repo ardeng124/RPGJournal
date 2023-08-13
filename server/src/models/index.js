@@ -18,6 +18,32 @@ journalsSchema.set('toJSON', {
   }
 })
 const Journal = mongoose.model('Journal', journalsSchema)
+
+
+const userSchema = new mongoose.Schema({
+  username: {type: String, unique: true},
+  password: {type: String, unique: false},
+  firstName: String,
+  lastName: String, 
+  passwordHash: String, 
+  email: {type: String, unique: true},
+  entries: [
+    {
+      type: Object,
+      ref: 'Journal'
+    }],
+  })
+
+userSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+      returnedObject.id = document._id.toString()
+      delete returnedObject._id
+      delete returnedObject.__v
+  }
+})
+
+const User = mongoose.model("User", userSchema);
+
 const initDB = async () => {
     await mongoose
         .connect(config.mongoDBUrl)
@@ -26,4 +52,4 @@ const initDB = async () => {
         })
     }
 
-module.exports = { Journal, initDB }
+module.exports = { Journal, initDB, User }
