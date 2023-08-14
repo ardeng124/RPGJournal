@@ -1,11 +1,10 @@
 import React from 'react'
 
 const JournalEntryListItem = (props) => {
-    const {name,tags, date} = props
-    console.log(props)
-    console.log(name)
+    const {name,tags, date, clickFunc} = props
+
     return (
-        <tr className='JournalListItem'>
+        <tr className='JournalListItem' onClick={clickFunc}>
             <td>{name}</td>
             <td>{tags}</td>
             <td>{date}</td>

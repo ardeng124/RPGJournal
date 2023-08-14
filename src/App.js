@@ -13,6 +13,7 @@ import Dashboard from "./screens/Dashboard"
 import LoginPage from "./screens/LoginPage"
 
 import SignupPage from "./screens/SignupPage"
+import EntryPage from "./screens/EntryPage"
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
     <Route path="/dashboard" element={<Dashboard />} />
     <Route path="/login" element={<LoginPage />} />
     <Route path="/signup" element={<SignupPage />} />
+    <Route path="/journal/:id" element={<EntryPage/>} />
 
     </Routes>
     

@@ -1,13 +1,13 @@
 const mongoose = require('mongoose')
 const config = require('../config')
 
+
 const journalsSchema = new mongoose.Schema({
   content: {type:String},
   tags: { type : [Object], default:[], ref:'Tags'},
   date: {type: Date, default: Date.now},
-  Title: {type:String},
-
-
+  title: {type:String},
+  owner: {type: mongoose.Types.ObjectId, ref: 'User'},
 })
 
 journalsSchema.set('toJSON', {

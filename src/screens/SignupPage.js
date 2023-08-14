@@ -58,11 +58,11 @@ const SignupPage = () => {
         <form onSubmit={formHandler}>
         <div class="row">
             <div class="six columns">
-            <label for="usernameInput">Username</label>
+            <label for="usernameInput">First name</label>
             <input class="u-full-width" type="name" placeholder="John" name="firstName" onChange={updateField} required/>
             </div>
             <div class="six columns">
-            <label for="usernameInput">Email</label>
+            <label for="usernameInput">Last name</label>
             <input class="u-full-width" type="name" placeholder="Smith" name="lastName" onChange={updateField} required/>
             </div>
         </div>

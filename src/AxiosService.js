@@ -18,7 +18,14 @@ const validateUser = async () => {
         return "valid"
     }
 }
-
+const logout = () => {
+    localStorage.clear()
+    token = ""
+    //make cookie instantly expire thus get deleted
+    document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+    console.log("Logging Out...")
+    return "done"
+}
 const login = async (newUser) => {
     //do some stuff with cookies
     console.log(newUser)
@@ -39,11 +46,22 @@ const login = async (newUser) => {
 
 const getJournalEntries = async () => {
     try {
-        console.log(token)
-        const response = await axios.get("http://localhost:8102/api/journal", { headers: { "Authorization": `Bearer ${token}` } })
+        const response = await axios.get(serverUrl+"api/journal", { headers: { "Authorization": `Bearer ${token}` } })
+        return response 
     } catch (e){
-        console.log(e)
+        console.log(e.response)
+        return e.response
+    }
+}
 
+const getJournalEntry = async (id) => {
+
+    try {
+        const response = await axios.get(serverUrl+`api/journal/${id}`, { headers: { "Authorization": `Bearer ${token}` } })
+        return response 
+    } catch (e){
+        console.log(e.response)
+        return e.response
     }
 }
 
@@ -64,7 +82,9 @@ const register = async (newUser) => {
 
 export default {
     getJournalEntries,
+    getJournalEntry,
     login,
     register,
-    validateUser
+    validateUser,
+    logout
 }
