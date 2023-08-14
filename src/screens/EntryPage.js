@@ -5,7 +5,10 @@ import SideBar from '../components/SideBar';
 
 const EntryPage = () => {
     const navigate = useNavigate()
+    const [editMode, setEditMode] = useState(false)
     const id = useParams().id
+    const [initialState, setInitialState] = useState({content:'', title:''})
+    const [formInfo, setFormInfo] = useState(initialState)
     const [itemDetails, setItemDetails] = useState({
         content:"",
         tags:[],
@@ -14,7 +17,27 @@ const EntryPage = () => {
         id:useParams().id,
         date:""
     })
+    const updateField = (event) => {
+        // which input element is this
+        const name = event.target.attributes.name.value
+        if (name === "title") {
+            setFormInfo({...formInfo, title: event.target.value})
+        } else if (name === "content") {
+            setFormInfo({...formInfo, content: event.target.value})
+        }
+    }
+    const saveEdits = (event) => {
+        AxiosService.modifyEntry(formInfo, id).then(response => {
+            if(response.status != 200) {
+                window.alert('error updating')
+                //TODO: make a proper way of showing errors
 
+            } else {
+                setItemDetails(response.data.entryNew)
+                setEditMode(false)
+            }
+        })
+    }
     useEffect(() => {
         AxiosService.getJournalEntry(id).then(response => {
             if(response.status == 401) {
@@ -28,6 +51,7 @@ const EntryPage = () => {
             const date  = new Date (response.data.date)
             response.data.date = date.toGMTString()
             setItemDetails(response.data)
+            setInitialState({title:itemDetails.title, content:itemDetails.content})
             
         })
     },[])
@@ -43,18 +67,23 @@ const EntryPage = () => {
                     <p> {AxiosService.getName}</p>
                     </div>
                     <div className='five columns centeredTitle '>
-                        <h1> {itemDetails.title} </h1>
-                        <h6>{itemDetails.date}</h6>
+                    {editMode ? <input className="titleInput" name ='title' onChange={updateField} defaultValue={itemDetails.title}></input>:  <h1> {itemDetails.title} </h1>}
+                    <h6>{itemDetails.date}</h6>
                     </div>
                 </div>
         </div>
             
         <section className='MainContent'>
-           <p>{itemDetails.content}</p>
+            {editMode ? <textarea name ='content' onChange={updateField} defaultValue={itemDetails.content}></textarea>: <p>{itemDetails.content} </p>}
 
         </section>
+        <div className="buttonSection">
+        {editMode ? <button className="editBtn" onClick={() => saveEdits()} >Save</button> : <button onClick={() => setEditMode(true)} >Edit</button>}
+        {editMode && <button className="" onClick={() => setEditMode(false)}>Cancel</button>}
+        </div>
+        
 
-    </section>
+        </section>
         </section>
     )
 }

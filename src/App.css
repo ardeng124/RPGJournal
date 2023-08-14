@@ -143,11 +143,42 @@
 .EntryPage p {
   padding:20px;
   margin:auto;
-  align-self: center;
+text-align: left;
   width:80%;
 
+}
+.EntryPage .MainContent {
+  text-align: center;
+}
+.EntryPage input {
+  padding:20px;
+  margin:auto;
+  width:80%;
+  text-align: left;
+  overflow: auto;
+  overflow-wrap: break-word
+}
+.EntryPage textarea {
+  padding:20px;
+  margin:auto;
+  width:80%;
+  text-align: left;
+  min-height: 50vh;
 }
 .centeredTitle {
   text-align: center;
   padding:30px;
+}
+.titleInput {
+  font-size: 5.0rem; line-height: 1.2;  letter-spacing: -.1rem;
+  text-align: center !important;
+}
+.buttonSection {
+  bottom: 10px;
+  top: 90%;
+  position: absolute;
+  right: 5rem;
+}
+.buttonSection button {
+  margin:5px;
 }

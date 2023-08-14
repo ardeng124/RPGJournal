@@ -80,11 +80,26 @@ const register = async (newUser) => {
     return response2
 }
 
+const modifyEntry = async (updatedEntry,id) => {
+    try {
+        const response2 = await axios.put(serverUrl +`api/journal/${id}`, updatedEntry , { headers: { "Authorization": `Bearer ${token}` } })
+        if (response2.data.status == 409){
+            return response2
+        }
+
+        return response2
+    } catch (e) {
+        console.log(e)
+        return e.response
+    }
+}
+
 export default {
     getJournalEntries,
     getJournalEntry,
     login,
     register,
     validateUser,
-    logout
+    logout,
+    modifyEntry
 }
