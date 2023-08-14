@@ -16,6 +16,7 @@ router.post('/auth/login', auth.loginUser)
 router.post('/auth/register', auth.createUser)
 router.post('/api/journal', journal.addJournalEntry)
 router.put('/api/journal/:id', journal.modifyJournalEntry)
+router.delete('/api/journal/:id', journal.deleteJournalEntry)
 
 router.get('/api/auth/', auth.validate)
 

@@ -33,6 +33,8 @@ const getJournalEntry = async (request, response) => {
              response.status(404).json({"error":"could not locate entry"})
         }
      }).clone();
+     const userFind = await models.User.findById(decodedToken1.id)
+     if (entry.owner != userFind.id) return response.status(403).json({"error":"forbidden"})
      response.status(200).json(entry)
 }
 
@@ -55,7 +57,7 @@ const addJournalEntry = async (request, response) => {
         date: new Date(),
         owner: userFind.id
     })
-    const savedItem = await entry.save()
+    const entryNew = await entry.save()
 
     const decodedToken = Util.getDecodedToken(Util.getToken(request));
 
@@ -64,7 +66,7 @@ const addJournalEntry = async (request, response) => {
         {"$push" : {"entries": entry.id}}
     )
 
-    response.json(savedItem)
+    response.status(201).json(entryNew)
 }
 
 const modifyJournalEntry = async (request, response) => {
@@ -87,7 +89,10 @@ const modifyJournalEntry = async (request, response) => {
              response.status(404).json({"error":"could not locate entry"})
         }
      }).clone();
-     
+     const userFind = await models.User.findById(decodedToken1.id)
+
+     if (entry.owner != userFind.id) return response.status(403).json({"error":"forbidden"})
+
     const entryNew = {
         "title": body.title ? body.title : entry.title,
         "content" : body.content ? body.content :entry.content,
@@ -98,11 +103,38 @@ const modifyJournalEntry = async (request, response) => {
     }
     const it = await models.Journal.findByIdAndUpdate(id, entryNew )
     console.log(it)
-    response.status(200).json({entryNew})
+    response.status(201).json({entryNew})
+}
+
+const deleteJournalEntry = async (request, response) => {
+    console.log("eee")
+    if (request.get('Authorization') == undefined) {
+        return response.status(401).json({status:"unauthenticated"})
+    }
+    const decodedToken1 = Util.getDecodedToken(Util.getToken(request));
+    if (decodedToken1 == null) {
+        return response.status(401).json({status:"unauthenticated"})
+    }
+
+    const id = request.params.id
+    if(!id) return response.status(400).json({status:"missing id"})
+   
+    const userFind = await models.User.findById(decodedToken1.id)
+
+    const entry = await models.Journal.findById(id, (err) => { 
+        if (err) {
+             response.status(404).json({"error":"could not locate entry"})
+        }
+     }).clone();
+     if (entry.owner != userFind.id) return response.status(403).json({"error":"forbidden"})
+
+    const it = await models.Journal.deleteOne({_id: id})
+    response.status(200).json({it})
 }
 module.exports = {
     getJournalEntries,
     getJournalEntry,
     addJournalEntry,
-    modifyJournalEntry
+    modifyJournalEntry,
+    deleteJournalEntry
 }

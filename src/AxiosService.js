@@ -93,6 +93,31 @@ const modifyEntry = async (updatedEntry,id) => {
         return e.response
     }
 }
+const deleteEntry = async (id) => {
+    try {
+        const response2 = await axios.delete(serverUrl +`api/journal/${id}`, { headers: { "Authorization": `Bearer ${token}` } })
+        if (response2.data.status == 409){
+            return response2
+        }
+        return response2
+    } catch (e) {
+        console.log(e)
+        return e.response
+    }
+}
+const createEntry = async (newEntry) => {
+    try {
+        const response2 = await axios.post(serverUrl +`api/journal/`, newEntry , { headers: { "Authorization": `Bearer ${token}` } })
+        if (response2.data.status == 409){
+            return response2
+        }
+
+        return response2
+    } catch (e) {
+        console.log(e)
+        return e.response
+    }
+}
 
 export default {
     getJournalEntries,
@@ -101,5 +126,7 @@ export default {
     register,
     validateUser,
     logout,
-    modifyEntry
+    modifyEntry,
+    createEntry,
+    deleteEntry
 }

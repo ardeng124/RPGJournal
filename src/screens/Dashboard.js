@@ -63,7 +63,11 @@ const Dashboard = () => {
                 </table>
 
         </section>
+        <div className="createBtnSection">
+        <button className="editBtn" onClick={() => navigate('/create')} >Create note</button>
 
+        </div>
+        
     </section>
         </section>
     )

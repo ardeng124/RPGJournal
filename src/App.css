@@ -174,11 +174,32 @@ text-align: left;
   text-align: center !important;
 }
 .buttonSection {
-  bottom: 10px;
-  top: 90%;
+  top: 72%;
   position: absolute;
-  right: 5rem;
+  left:20rem;
+  width: 80%;
+  margin: auto;
+  margin-top: 48px;
 }
 .buttonSection button {
   margin:5px;
+}
+.editGroup button {
+  float:right;
+}
+.createBtnSection{
+  top: 72%;
+  position: absolute;
+  left:20rem;
+  width: 80%;
+  margin: auto;
+  margin-top: 48px;
+}
+.createBtnSection button {
+  float:right
+}
+.deleteButton {
+  background-color: rgb(240, 150, 150);
+  color: white;
+  /* left: 50rem; */
 }

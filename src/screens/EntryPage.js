@@ -28,13 +28,24 @@ const EntryPage = () => {
     }
     const saveEdits = (event) => {
         AxiosService.modifyEntry(formInfo, id).then(response => {
-            if(response.status != 200) {
+            if(response.status != 201) {
                 window.alert('error updating')
                 //TODO: make a proper way of showing errors
 
             } else {
                 setItemDetails(response.data.entryNew)
                 setEditMode(false)
+            }
+        })
+    }
+    const deleteEntry = (event) => {
+        AxiosService.deleteEntry(id).then(response => {
+            if(response.status != 200) {
+                window.alert('error deleting')
+                //TODO: make a proper way of showing errors
+
+            } else {
+                navigate('/dashboard')
             }
         })
     }
@@ -77,9 +88,12 @@ const EntryPage = () => {
             {editMode ? <textarea name ='content' onChange={updateField} defaultValue={itemDetails.content}></textarea>: <p>{itemDetails.content} </p>}
 
         </section>
-        <div className="buttonSection">
-        {editMode ? <button className="editBtn" onClick={() => saveEdits()} >Save</button> : <button onClick={() => setEditMode(true)} >Edit</button>}
+        <div className="row buttonSection" >
+        <div className="editGroup">
         {editMode && <button className="" onClick={() => setEditMode(false)}>Cancel</button>}
+        {editMode ? <button className="editBtn" onClick={() => saveEdits()} >Save</button> : <button onClick={() => setEditMode(true)} >Edit</button>}
+        </div>
+        {editMode && <button className="deleteButton" onClick={() => deleteEntry()}> Delete</button>}
         </div>
         
 

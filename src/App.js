@@ -14,6 +14,7 @@ import LoginPage from "./screens/LoginPage"
 
 import SignupPage from "./screens/SignupPage"
 import EntryPage from "./screens/EntryPage"
+import CreateNotePage from './screens/CreateNotePage';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
     <Route path="/login" element={<LoginPage />} />
     <Route path="/signup" element={<SignupPage />} />
     <Route path="/journal/:id" element={<EntryPage/>} />
+    <Route path="/create" element={<CreateNotePage />} />
 
     </Routes>
     
