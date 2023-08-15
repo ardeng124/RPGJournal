@@ -72,7 +72,6 @@ const EntryPage = () => {
         <SideBar shrink={shrink} setShrink={setShrink}></SideBar>
         <section className={shrink ? `shrink` : `Page`} >
         <div className='topbar'>
-
                 <div className='row '>
                     <div className='three columns'>
                     <p> {AxiosService.getName}</p>

@@ -6,7 +6,9 @@ const serverUrl = "http://localhost:8102/"
 var token = document.cookie.substring(6)
 
 var username = ""
-
+const refreshToken = () => {
+    token = document.cookie.substring(6)
+}
 
 const validateUser = async () => {
     token = document.cookie.substring(6)
@@ -45,6 +47,7 @@ const login = async (newUser) => {
 
 
 const getJournalEntries = async () => {
+    refreshToken()
     try {
         const response = await axios.get(serverUrl+"api/journal", { headers: { "Authorization": `Bearer ${token}` } })
         return response 
@@ -55,7 +58,7 @@ const getJournalEntries = async () => {
 }
 
 const getJournalEntry = async (id) => {
-
+    refreshToken()
     try {
         const response = await axios.get(serverUrl+`api/journal/${id}`, { headers: { "Authorization": `Bearer ${token}` } })
         return response 

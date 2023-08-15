@@ -174,7 +174,7 @@ text-align: left;
   text-align: center !important;
 }
 .buttonSection {
-  top: 72%;
+
   position: absolute;
   left:20rem;
   width: 80%;
@@ -188,7 +188,7 @@ text-align: left;
   float:right;
 }
 .createBtnSection{
-  top: 72%;
+
   position: absolute;
   left:20rem;
   width: 80%;
@@ -202,4 +202,7 @@ text-align: left;
   background-color: rgb(240, 150, 150);
   color: white;
   /* left: 50rem; */
+}
+.EntryPage .MainContent p {
+  white-space: pre-line;
 }
