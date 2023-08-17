@@ -16,6 +16,7 @@ import SignupPage from "./screens/SignupPage"
 import EntryPage from "./screens/EntryPage"
 import CreateNotePage from './screens/CreateNotePage';
 
+import AboutPage from './screens/AboutPage';
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function App() {
     <Route path="/signup" element={<SignupPage />} />
     <Route path="/journal/:id" element={<EntryPage/>} />
     <Route path="/create" element={<CreateNotePage />} />
-
+    <Route path="/about" element={<AboutPage />} />
     </Routes>
     
   </Router>

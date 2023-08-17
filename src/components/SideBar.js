@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router'
 import icon from '../Assets/hamburgericon.png';
 import followupImg from '../Assets/To-Do_Icon.png';
 import journalImg from '../Assets/Icon2.png';
+import aboutImg from '../Assets/About Icon.png';
 
 const SideBar = (props) => {
     const {shrink,setShrink} = props
@@ -30,6 +31,7 @@ const SideBar = (props) => {
     <div className='sidebar' ref={sidebarElement}>
         <a onClick = { () => navigate("/dashboard")}> <img className='sidebarIcon' src={journalImg} />Journal</a>
         <a onClick={ () => navigate("/followup")}> <img className='sidebarIcon' src={followupImg} />Follow Up</a>
+        <a onClick={ () => navigate("/about")}> <img className='sidebarIcon' src={aboutImg} />About</a>
         <a className='logoutbtnA'> <button className='logout-button' onClick={() => logOutFunc()}> Log out</button> </a>
 
     </div>
