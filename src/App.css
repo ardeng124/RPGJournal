@@ -106,6 +106,7 @@
 }
 .topbar {
   margin-top:20px;
+  margin-bottom:40px;
 }
 
 .usrImg {
@@ -211,11 +212,33 @@ text-align: left;
   width: 200px;
   height: 200px;
   position: relative;
-  margin-left: 50%;
-}
 
+}
+.AboutPage .maincontent {
+  margin-left: 55px;
+  width:90%;
+  margin: auto;
+}
+.AboutPage .five.columns.img {
+  text-align: center;
+}
 .AboutPage .text {
   text-align: left;
   position: relative;
-  margin-left: 20%;
+  /* margin-left: 20%; */
+  margin:10px;
+  padding:30px;
+}
+.followupForm {
+  width:60%;
+  text-align: center;
+  margin:auto;
+  margin-top:10px;
+  padding:10px;
+}
+.errorText {
+  color:red;
+  text-align: center !important;
+  font-weight: 600;
+  /* text-shadow: 1px 1px 20px black; */
 }

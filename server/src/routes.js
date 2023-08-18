@@ -12,6 +12,8 @@ const router = express.Router()
 router.get('/api/journal/:id', journal.getJournalEntry)
 
 router.get('/api/journal/', journal.getJournalEntries)
+router.get('/api/followup/', journal.getJournalEntriesFollowup)
+
 router.post('/auth/login', auth.loginUser)
 router.post('/auth/register', auth.createUser)
 router.post('/api/journal', journal.addJournalEntry)

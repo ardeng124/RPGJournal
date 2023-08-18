@@ -1,4 +1,5 @@
 import axios from 'axios'
+import FollowUpFormEntry from './components/FollowUpFormEntry'
 
 
 const serverUrl = "http://localhost:8102/"
@@ -9,7 +10,16 @@ var username = ""
 const refreshToken = () => {
     token = document.cookie.substring(6)
 }
-
+//TODO: finish this function
+const refreshLocalName = async () => {
+//     let localStr = localStorage.get('firstName')
+//     if(!localStr || localStr=='undefined') {
+//         refreshToken()
+//         if (token != 'undefined') {
+//             const response = await 
+//         }
+//     }
+}
 const validateUser = async () => {
     token = document.cookie.substring(6)
     const response = await axios.get(serverUrl + "api/auth/", { headers: { "Authorization": `Bearer ${token}` } })
@@ -40,7 +50,7 @@ const login = async (newUser) => {
     const expiration_date = new Date()
     let expires = new Date(Date.now() + 86400 * 1000).toUTCString()
     document.cookie = `token=${token}; SameSite=None` + expires + ";path=/;"
-    localStorage.setItem('name',response2.data.name)
+    localStorage.setItem('firstName',response2.data.name)
 
     return response2
 }
@@ -84,6 +94,14 @@ const register = async (newUser) => {
 }
 
 const modifyEntry = async (updatedEntry,id) => {
+
+    let followupItem = {
+        followup:updatedEntry.followupCheck,
+        date:updatedEntry.followupDate,
+        lvl:updatedEntry.followupLvl
+    }
+    updatedEntry.followup = followupItem
+
     try {
         const response2 = await axios.put(serverUrl +`api/journal/${id}`, updatedEntry , { headers: { "Authorization": `Bearer ${token}` } })
         if (response2.data.status == 409){
@@ -109,6 +127,13 @@ const deleteEntry = async (id) => {
     }
 }
 const createEntry = async (newEntry) => {
+
+    let followupItem = {
+        followup:newEntry.followupCheck,
+        date:newEntry.followupDate,
+        lvl:newEntry.followupLvl
+    }
+    newEntry.followup = followupItem
     try {
         const response2 = await axios.post(serverUrl +`api/journal/`, newEntry , { headers: { "Authorization": `Bearer ${token}` } })
         if (response2.data.status == 409){

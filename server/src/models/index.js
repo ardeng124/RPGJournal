@@ -8,6 +8,7 @@ const journalsSchema = new mongoose.Schema({
   date: {type: Date, default: Date.now},
   title: {type:String},
   owner: {type: mongoose.Types.ObjectId, ref: 'User'},
+  followup: {type:Object, default:{'followup':false,'date':'null', 'level':'null'}}
 })
 
 journalsSchema.set('toJSON', {
@@ -44,6 +45,26 @@ userSchema.set('toJSON', {
 
 const User = mongoose.model("User", userSchema);
 
+const tagSchema = new mongoose.Schema({
+  name: {type: String, unique: true},
+  entries: [
+    {
+      type: Object,
+      ref: 'Journal'
+    }],
+  })
+
+  tagSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+      returnedObject.id = document._id.toString()
+      delete returnedObject._id
+      delete returnedObject.__v
+  }
+})
+
+const Tag = mongoose.model("Tag", tagSchema);
+
+
 const initDB = async () => {
     await mongoose
         .connect(config.mongoDBUrl)
@@ -52,4 +73,4 @@ const initDB = async () => {
         })
     }
 
-module.exports = { Journal, initDB, User }
+module.exports = { Journal, initDB, User, Tag}

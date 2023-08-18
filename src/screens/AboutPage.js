@@ -22,8 +22,10 @@ const AboutPage = () => {
                         </div>
                     </div>
                 </div>
+                <section className='maincontent' >
+
                 <div className='row'>
-                    <div className='five columns'>
+                    <div className='five columns img'>
                         <img className='img' src={ArdenImg}/>
                         <body className='text'>
                                 <p>
@@ -31,7 +33,7 @@ const AboutPage = () => {
                                 </p>
                         </body>
                     </div>
-                    <div className='five columns'>
+                    <div className='five columns img'>
                         <img className='img' src={StanleyImg}/>
                         <body className='text'>
                                 <p>
@@ -41,6 +43,7 @@ const AboutPage = () => {
                         </body>
                     </div>
                 </div>
+                </section>
             </section>
         </section>
     )

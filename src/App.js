@@ -17,6 +17,8 @@ import EntryPage from "./screens/EntryPage"
 import CreateNotePage from './screens/CreateNotePage';
 
 import AboutPage from './screens/AboutPage';
+import FollowupPage from './screens/FollowupPage';
+
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
     <Route path="/journal/:id" element={<EntryPage/>} />
     <Route path="/create" element={<CreateNotePage />} />
     <Route path="/about" element={<AboutPage />} />
+    <Route path="/followup" element={<FollowupPage />} />
+
     </Routes>
     
   </Router>
