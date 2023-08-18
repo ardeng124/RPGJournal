@@ -17,7 +17,7 @@ const EntryPage = () => {
         followup: {followup:false, date:"null",lvl:"null"}
     })
     const id = useParams().id
-    const [initialState, setInitialState] = useState({content:'', title:'', followupCheck:itemDetails.followup.followup, followupDate:itemDetails.followup.date, followupLvl:itemDetails.followup.lvl})
+    const [initialState, setInitialState] = useState({content:'', title:'', followupCheck:"null", followupDate:"null", followupLvl:"null"})
     const [formInfo, setFormInfo] = useState(initialState)
     const [errorMsg, setError] = useState("")
     const [followupSet, setFollowUp] = useState(itemDetails.followup.followup)
@@ -39,7 +39,7 @@ const EntryPage = () => {
             setError("")
             if(event.target.checked) setFollowUp(true);
             if(!event.target.checked) setFollowUp(false);
-
+            console.log(followupSet)
             setFormInfo({...formInfo, followupCheck:!followupSet})
 
         }
@@ -50,6 +50,7 @@ const EntryPage = () => {
         setFollowUp(itemDetails.followup.followup)
     }
     const saveEdits = (event) => {
+        console.log(formInfo)
         if(formInfo.followupCheck == true) {
             if(formInfo.followupDate == "null" && (formInfo.followupLvl == "null" || formInfo.followupLvl=="")){
 
@@ -57,6 +58,8 @@ const EntryPage = () => {
                 return
             }
         }
+        setError(""); 
+
         AxiosService.modifyEntry(formInfo, id).then(response => {
             if(response.status != 201) {
                 window.alert('error updating')
@@ -96,8 +99,8 @@ const EntryPage = () => {
             const date  = new Date (response.data.date)
             response.data.date = date.toGMTString()
             setItemDetails(response.data)
+            setInitialState({title:itemDetails.title, content:itemDetails.content, followupCheck:response.data.followup.followup, followupDate:response.data.followup.date, followupLvl:response.data.followup.lvl})
             setFollowUp(response.data.followup.followup)
-            setInitialState({title:itemDetails.title, content:itemDetails.content})
             
         })
     },[])

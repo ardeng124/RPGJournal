@@ -67,6 +67,17 @@ const getJournalEntries = async () => {
     }
 }
 
+const getFollowupJournalEntries = async () => {
+    refreshToken()
+    try {
+        const response = await axios.get(serverUrl+"api/followup", { headers: { "Authorization": `Bearer ${token}` } })
+        return response 
+    } catch (e){
+        console.log(e.response)
+        return e.response
+    }
+}
+
 const getJournalEntry = async (id) => {
     refreshToken()
     try {
@@ -100,7 +111,8 @@ const modifyEntry = async (updatedEntry,id) => {
         date:updatedEntry.followupDate,
         lvl:updatedEntry.followupLvl
     }
-    updatedEntry.followup = followupItem
+
+    if(followupItem.followup != 'null') updatedEntry.followup = followupItem
 
     try {
         const response2 = await axios.put(serverUrl +`api/journal/${id}`, updatedEntry , { headers: { "Authorization": `Bearer ${token}` } })
@@ -156,5 +168,6 @@ export default {
     logout,
     modifyEntry,
     createEntry,
-    deleteEntry
+    deleteEntry,
+    getFollowupJournalEntries
 }

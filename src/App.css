@@ -242,3 +242,28 @@ text-align: left;
   font-weight: 600;
   /* text-shadow: 1px 1px 20px black; */
 }
+.FollowUpPage .main {
+  margin-left: 0px !important;
+}
+.FollowUpListItem{
+  width:80%;
+  cursor: pointer;
+}
+.FollowUpListItem:hover{
+  text-decoration: underline;
+  color: #818181;
+  transition: 0.3s;
+}
+
+.followupTable{
+  /* width:80%; */
+  margin:auto;
+  margin-top:50px;
+}
+.FollowUpPage .MainContent {
+  margin-left:65px;
+}
+
+.FollowUpPage caption {
+  font-size:2.5rem
+}
