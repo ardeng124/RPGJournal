@@ -256,7 +256,7 @@ text-align: left;
 }
 
 .followupTable{
-  /* width:80%; */
+  width:80%;
   margin:auto;
   margin-top:50px;
 }
@@ -266,4 +266,13 @@ text-align: left;
 
 .FollowUpPage caption {
   font-size:2.5rem
+}
+.FollowUpPage .lvlTh {
+  min-width:10rem;
+} 
+.tagTh {
+  min-width:13rem;
+}
+.titleTh{
+  min-width:13rem;
 }

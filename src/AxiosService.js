@@ -22,6 +22,8 @@ const refreshLocalName = async () => {
 }
 const validateUser = async () => {
     token = document.cookie.substring(6)
+    refreshToken()
+    if (!token) return "invalid"
     const response = await axios.get(serverUrl + "api/auth/", { headers: { "Authorization": `Bearer ${token}` } })
     if (response.data.status === "unregistered") {
         return "invalid"
@@ -41,18 +43,20 @@ const logout = () => {
 const login = async (newUser) => {
     //do some stuff with cookies
     console.log(newUser)
-    const response2 = await axios.post(serverUrl + "auth/login/", newUser)
-    if (response2.data.status == 401){
+    try {
+        const response2 = await axios.post(serverUrl + "auth/login/", newUser)
+        token = response2.data.token
+        const expiration_date = new Date()
+        let expires = new Date(Date.now() + 86400 * 1000).toUTCString()
+        document.cookie = `token=${token}; SameSite=None` + expires + ";path=/;"
+        localStorage.setItem('firstName',response2.data.name)
+    
         return response2
+    } catch (e){
+        console.log(e.response.status)
+        return e.response
     }
-
-    token = response2.data.token
-    const expiration_date = new Date()
-    let expires = new Date(Date.now() + 86400 * 1000).toUTCString()
-    document.cookie = `token=${token}; SameSite=None` + expires + ";path=/;"
-    localStorage.setItem('firstName',response2.data.name)
-
-    return response2
+    
 }
 
 

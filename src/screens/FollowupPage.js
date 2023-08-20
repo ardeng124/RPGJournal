@@ -24,7 +24,7 @@ const FollowupPage = () => {
             console.log(response.data.entries2)
             response.data.entries2.forEach((x,index) => {
                 let date  = new Date (x.date)
-                response.data.entries2[index].date = date.toGMTString()
+                response.data.entries2[index].date = date.toGMTString().substring(0,date.toGMTString().length-3)
             })
             setJournalItems(response.data.entries2)
 
@@ -53,34 +53,36 @@ const FollowupPage = () => {
             
         <section className='MainContent'>
             <div className='row'>
-                <div className=' five columns' >
+                <div className=' six columns' >
                     <table class="followupTable">
                         <caption>LEVEL</caption>
                         <thead>
                             <tr>
-                            <th>Title</th>
-                            <th>Level:</th>
+                            <th className='titleTh'>Title</th>
+                            <th className='lvlTh'>Level:</th>
+                            <th  className='tagTh'> Tags </th>
                             <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                        {lvlItems.map(item => <FollowUpListItem id = {item.id} name={item.title} clickFunc={() => entryClicked(item.id)} followup={item.followup.lvl} date={item.date} />  )}
+                        {lvlItems.map(item => <FollowUpListItem id = {item.id} name={item.title} tags={item.tags} clickFunc={() => entryClicked(item.id)} followup={item.followup.lvl} date={item.date} />  )}
                         <tr></tr>
                         </tbody>
                     </table>
                 </div>
-                <div className=' five columns' >
+                <div className=' six columns' >
                     <table class="followupTable">
                         <caption>DATE</caption>
                         <thead>
                             <tr>
-                            <th>Title</th>
-                            <th>On date:</th>
+                            <th className='titleTh'>Title</th>
+                            <th className='lvlTh'>On Date:</th>
+                            <th className='tagTh'> Tags </th>
                             <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                        {dateItems.map(item => <FollowUpListItem id = {item.id} name={item.title} followup={item.followup.date} clickFunc={() => entryClicked(item.id)} tags={item.tags} date={item.date} />  )}
+                        {dateItems.map(item => <FollowUpListItem id = {item.id} name={item.title} tags={item.tags} followup={item.followup.date} clickFunc={() => entryClicked(item.id)} date={item.date} />  )}
                         <tr></tr>
                         </tbody>
                     </table>

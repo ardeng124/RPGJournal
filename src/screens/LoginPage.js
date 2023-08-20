@@ -10,6 +10,8 @@ const LoginPage = () => {
     const initialState = {username: '', password: ''}
 
     const [formInfo, setFormInfo] = useState(initialState)
+    const [errorMsg, setError] = useState("")
+    const [buttonDisabled, setButtonDisabled] = useState(false)
 
     const updateField = (event) => {
         // which input element is this
@@ -23,12 +25,16 @@ const LoginPage = () => {
 
     const formHandler = (event) => {
         event.preventDefault()
-        console.log(formInfo)
+        setButtonDisabled(true)
+        setTimeout(() => setButtonDisabled(false),1000)
         AxiosService.login(formInfo)
         .then(response => {
-            console.log(response)
-            if(response.status=200) {
+            if(response.status==200) {
                 navigate("/dashboard")
+             } 
+            else if (response.status==401){
+                setError("Invalid username or password")
+
             }
         })
     }
@@ -55,8 +61,10 @@ const LoginPage = () => {
             </div>
         </div>
         
-        <input class="button-primary" type="submit" value="Submit"/>
+        <input class="button-primary" type="submit" disabled={buttonDisabled} value="Submit"/>
         </form>
+        <p className="errorText"> {errorMsg}</p> 
+
         </div>
         </body>
     </section>

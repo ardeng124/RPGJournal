@@ -7,6 +7,9 @@ import AxiosService from '../AxiosService';
 const SignupPage = () => {
     const navigate = useNavigate()
     const [loggedIn, setLoggedIn] = useState(false)
+    const [buttonDisabled, setButtonDisabled] = useState(false)
+    const [errorMsg, setError] = useState("")
+
     const initialState = {username: '', password: '',firstName:'',lastName:'',email:'',repeatPassword:"" }
     useEffect( () => {
         AxiosService.validateUser().then(response => {
@@ -34,9 +37,11 @@ const SignupPage = () => {
             setFormInfo({...formInfo, email: event.target.value})
         }
     }
-
     const formHandler = (event) => {
         event.preventDefault()
+        setButtonDisabled(true)
+        setTimeout(() => setButtonDisabled(false),2000)
+
         console.log(formInfo)
         if (formInfo.password === formInfo.repeatPassword) {
             AxiosService.register(formInfo)
@@ -44,10 +49,12 @@ const SignupPage = () => {
         .then(response => {
             console.log(response)
             if(response.status=200) {
+                setButtonDisabled(true)
                 navigate("/dashboard")
             }
         })
         } else {
+            //todo: Error handling
             //INSERT ERROR HANDLING
         }
     }
@@ -88,8 +95,9 @@ const SignupPage = () => {
 
         </div>
         
-        <input class="button-primary" type="submit" value="Submit"/>
+        <input class="button-primary" type="submit" disabled={buttonDisabled} value="Submit"/>
         </form>
+        <p className="errorText"> {errorMsg}</p> 
         </div>
         </body>
     </section>

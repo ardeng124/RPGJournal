@@ -122,14 +122,6 @@ const modifyJournalEntry = async (request, response) => {
         "owner": body.owner,
         "followup":body.followup ? body.followup : entry.followup
     }
-    // if(entryNew.followup.followup) {
-    //     if(entryNew.followup.date == "") {
-    //         entryNew.followup.date=="null"
-    //     }
-    //     if(entryNew.followup.lvl=="") {
-    //         entryNew.followup.lvl=="null"
-    //     }
-    // }
     const it = await models.Journal.findByIdAndUpdate(id, entryNew )
     console.log(it)
     response.status(201).json({entryNew})

@@ -80,9 +80,7 @@ const loginUser = async(request, response) => {
     const {username, password} = request.body
     const user = await models.User.findOne({username})
     const passwordCorrect = user === null ? false : await bcrypt.compare(password, user.passwordHash)
-    if (!(user && passwordCorrect)) {
-        
-    }
+ 
     if(!user || !passwordCorrect) {
         response
         .status(401)

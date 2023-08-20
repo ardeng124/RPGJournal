@@ -24,7 +24,7 @@ const Dashboard = () => {
             console.log(response.data.entries)
             response.data.entries.forEach((x,index) => {
                 let date  = new Date (x.date)
-                response.data.entries[index].date = date.toGMTString()
+                response.data.entries[index].date = date.toGMTString().substring(0,date.toGMTString().length-3)
             })
             setJournalItems(response.data.entries)
         })
