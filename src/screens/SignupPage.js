@@ -42,12 +42,10 @@ const SignupPage = () => {
         setButtonDisabled(true)
         setTimeout(() => setButtonDisabled(false),2000)
 
-        console.log(formInfo)
         if (formInfo.password === formInfo.repeatPassword) {
             AxiosService.register(formInfo)
 
         .then(response => {
-            console.log(response)
             if(response.status=200) {
                 setButtonDisabled(true)
                 navigate("/dashboard")
@@ -63,41 +61,41 @@ const SignupPage = () => {
         <body>
             <div className='container'>
         <form onSubmit={formHandler}>
-        <div class="row">
-            <div class="six columns">
+        <div className="row">
+            <div className="six columns">
             <label for="usernameInput">First name</label>
-            <input class="u-full-width" type="name" placeholder="John" name="firstName" onChange={updateField} required/>
+            <input className="u-full-width" type="name" placeholder="John" name="firstName" onChange={updateField} required/>
             </div>
-            <div class="six columns">
+            <div className="six columns">
             <label for="usernameInput">Last name</label>
-            <input class="u-full-width" type="name" placeholder="Smith" name="lastName" onChange={updateField} required/>
+            <input className="u-full-width" type="name" placeholder="Smith" name="lastName" onChange={updateField} required/>
             </div>
         </div>
         <div className='row'>
-            <div class="six columns">
+            <div className="six columns">
                 <label for="usernameInput">Username</label>
-                <input class="u-full-width" type="name" placeholder="Johns123" name="username" onChange={updateField} required/>
+                <input className="u-full-width" type="name" placeholder="Johns123" name="username" onChange={updateField} required/>
             </div>
-            <div class="six columns">
+            <div className="six columns">
                 <label for="usernameInput">Email</label>
-                <input class="u-full-width" type="email" placeholder="john@test.com" name="email" onChange={updateField} required/>
+                <input className="u-full-width" type="email" placeholder="john@test.com" name="email" onChange={updateField} required/>
             </div>
         </div>
         <div className='row'>
-        <div class="six columns">
+        <div className="six columns">
                 <label for="usernameInput">Password</label>
-                <input class="u-full-width" type="password" placeholder="****" name="password" onChange={updateField} required/>
+                <input className="u-full-width" type="password" placeholder="****" name="password" onChange={updateField} required/>
             </div>
-            <div class="six columns">
+            <div className="six columns">
             <label for="usernameInput">Repeat password</label>
-            <input class="u-full-width" type="password" placeholder="****" name="repeatPassword" onChange={updateField} required/>
+            <input className="u-full-width" type="password" placeholder="****" name="repeatPassword" onChange={updateField} required/>
             </div>
 
         </div>
         
-        <input class="button-primary" type="submit" disabled={buttonDisabled} value="Submit"/>
+        <input className="button-primary" type="submit" disabled={buttonDisabled} value="Submit"/>
         </form>
-        <p className="errorText"> {errorMsg}</p> 
+        {errorMsg != "" && <p className="errorText"> {errorMsg}</p>}
         </div>
         </body>
     </section>

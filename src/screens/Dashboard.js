@@ -5,7 +5,7 @@ import { useNavigate} from "react-router-dom"
 import JournalEntryListItem from '../components/JournalEntryListItem';
 import AxiosService from '../AxiosService';
 import SideBar from '../components/SideBar';
-
+import createIcon from '../Assets/plus_icon.png';
 
 const Dashboard = () => {
 
@@ -21,7 +21,6 @@ const Dashboard = () => {
                 window.alert("Error: Please log in again")
                 navigate('/login')
             }
-            console.log(response.data.entries)
             response.data.entries.forEach((x,index) => {
                 let date  = new Date (x.date)
                 response.data.entries[index].date = date.toGMTString().substring(0,date.toGMTString().length-3)
@@ -35,20 +34,22 @@ const Dashboard = () => {
         <SideBar shrink={shrink} setShrink={setShrink}></SideBar>
         <section className={shrink ? `shrink` : `Page`} >
         <div className='topbar'>
-
+{/* 
                 <div className='row'>
                     <div className='five columns'>
-                        
+                         */}
                     <p> {AxiosService.getName}</p>
-                    </div>
-                    <div className='five columns'>
+                    {/* </div> */}
+                    {/* <div className='five columns'> */}
                         <h1> Journal </h1>
                     </div>
-                </div>
-        </div>
+                {/* </div>  */}
+        {/* </div> */}
             
         <section className='MainContent'>
-            <table class="NotesTable">
+            <div className='innerContent'>
+
+            <table className="NotesTable">
                 <thead>
                     <tr>
                     <th>Title</th>
@@ -57,16 +58,18 @@ const Dashboard = () => {
                     </tr>
                 </thead>
                 <tbody>
-                  {journalItems.map(item => <JournalEntryListItem id = {item.id} name={item.title} clickFunc={() => entryClicked(item.id)} tags={item.tags} date={item.date} />  )}
+                  {journalItems.map(item => <JournalEntryListItem key={item.id} id = {item.id} name={item.title} clickFunc={() => entryClicked(item.id)} tags={item.tags} date={item.date} />  )}
                   <tr></tr>
                 </tbody>
                 </table>
+        <img src={createIcon} className={shrink ? ` createBtn shrink` : `createBtn`} onClick={() => navigate('/create')}/>
 
+        {/* <button className={shrink ? ` editBtn shrink` : `editBtn`} onClick={() => navigate('/create')} >Create note</button> */}
+            </div>
         </section>
-        <div className="createBtnSection">
-        <button className="editBtn" onClick={() => navigate('/create')} >Create note</button>
+        {/* <div className="createBtnSection">
 
-        </div>
+        </div> */}
         
     </section>
         </section>

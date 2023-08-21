@@ -50,20 +50,20 @@ const LoginPage = () => {
         <body>
             <div className='container'>
         <form onSubmit={formHandler}>
-        <div class="row">
-            <div class="six columns">
+        <div className="row">
+            <div className="six columns">
             <label for="usernameInput">Your username</label>
-            <input class="u-full-width" type="username" placeholder="test123" name="username" onChange={updateField} required/>
+            <input className="u-full-width" type="username" placeholder="test123" name="username" onChange={updateField} required/>
             </div>
-            <div class="six columns">
+            <div className="six columns">
             <label for="usernameInput">Your password</label>
-            <input class="u-full-width" type="password" placeholder="*****" name="password" onChange={updateField} required/>
+            <input className="u-full-width" type="password" placeholder="*****" name="password" onChange={updateField} required/>
             </div>
         </div>
         
-        <input class="button-primary" type="submit" disabled={buttonDisabled} value="Submit"/>
+        <input className="button-primary" type="submit" disabled={buttonDisabled} value="Submit"/>
         </form>
-        <p className="errorText"> {errorMsg}</p> 
+        {errorMsg != "" && <p className="errorText"> {errorMsg}</p>}
 
         </div>
         </body>

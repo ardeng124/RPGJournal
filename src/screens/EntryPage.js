@@ -3,6 +3,10 @@ import {useNavigate, useParams} from "react-router-dom"
 import AxiosService from "../AxiosService";
 import SideBar from '../components/SideBar';
 import FollowUpFormEntry from "../components/FollowUpFormEntry";
+import editIcon from '../Assets/pencilangled.png';
+import cancelIcon from '../Assets/cross_icon.png';
+import delIcon from '../Assets/Trash.png';
+import tickIcon from '../Assets/tick_icon.png';
 
 const EntryPage = () => {
     const navigate = useNavigate()
@@ -39,7 +43,6 @@ const EntryPage = () => {
             setError("")
             if(event.target.checked) setFollowUp(true);
             if(!event.target.checked) setFollowUp(false);
-            console.log(followupSet)
             setFormInfo({...formInfo, followupCheck:!followupSet})
 
         }
@@ -50,7 +53,6 @@ const EntryPage = () => {
         setFollowUp(itemDetails.followup.followup)
     }
     const saveEdits = (event) => {
-        console.log(formInfo)
         if(formInfo.followupCheck == true) {
             if(formInfo.followupDate == "null" && (formInfo.followupLvl == "null" || formInfo.followupLvl=="")){
 
@@ -68,7 +70,6 @@ const EntryPage = () => {
             } else {
                 setItemDetails(response.data.entryNew)
                 setEditMode(false)
-                console.log(response.data)
                 setFollowUp(response.data.entryNew.followup.followup)
             }
         })
@@ -110,31 +111,42 @@ const EntryPage = () => {
         <SideBar shrink={shrink} setShrink={setShrink}></SideBar>
         <section className={shrink ? `shrink` : `Page`} >
         <div className='topbar'>
-                <div className='row '>
+                {/* <div className='row '>
                     <div className='three columns'>
                     <p> {AxiosService.getName}</p>
                     </div>
-                    <div className='five columns centeredTitle '>
+                    <div className='five columns centeredTitle '> */}
+                    <div className="centeredTitle">
+
                     {editMode ? <input className="titleInput" name ='title' onChange={updateField} defaultValue={itemDetails.title}></input>:  <h1> {itemDetails.title} </h1>}
                     <h6>{itemDetails.date}</h6>
                     </div>
-                </div>
-        </div>
+                    </div>
+                {/* </div>
+        </div> */}
             
         <section className='MainContent'>
-            {editMode ? <textarea name ='content' onChange={updateField} defaultValue={itemDetails.content}></textarea>: <p>{itemDetails.content} </p>}
+            {editMode ? <textarea name ='content' className="entryContent" onChange={updateField} defaultValue={itemDetails.content}></textarea>: <p className="">{itemDetails.content} </p>}
+            {errorMsg != "" && <p className="errorText"> {errorMsg}</p>}
+
             {editMode && < div> <label> Enable follow up?</label>
                 <input type="checkbox" onChange={updateField} defaultChecked={itemDetails.followup.followup} name="followupCheck"/>
             </div>}
         {followupSet && <FollowUpFormEntry updateFn = {updateField} editMode={editMode} itemDetails={itemDetails.followup}/>}
-        <p className="errorText"> {errorMsg}</p> 
+
         </section>
         <div className="row buttonSection" >
         <div className="editGroup">
         {editMode && <button className="" onClick={() => cancelEdits()}>Cancel</button>}
+        {/* {editMode && <img src={cancelIcon} className="cancelBtn" onClick={() => cancelEdits()}/>} */}
+
         {editMode ? <button className="editBtn" onClick={() => saveEdits()} >Save</button> : <button onClick={() => setEditMode(true)} >Edit</button>}
+        {/* {editMode ? <img src={tickIcon} className="acceptBtn" onClick={() => saveEdits()} /> : <img className='editBtn' src={editIcon} onClick={() => setEditMode(true)} />} */}
+
         </div>
         {editMode && <button className="deleteButton" onClick={() => deleteEntry()}> Delete</button>}
+        {/* {editMode && <img src={delIcon} className="deleteBtn" onClick={() => deleteEntry()}/> } */}
+
         </div>
         
 

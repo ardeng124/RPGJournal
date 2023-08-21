@@ -123,12 +123,10 @@ const modifyJournalEntry = async (request, response) => {
         "followup":body.followup ? body.followup : entry.followup
     }
     const it = await models.Journal.findByIdAndUpdate(id, entryNew )
-    console.log(it)
     response.status(201).json({entryNew})
 }
 
 const deleteJournalEntry = async (request, response) => {
-    console.log("eee")
     if (request.get('Authorization') == undefined) {
         return response.status(401).json({status:"unauthenticated"})
     }

@@ -37,12 +37,11 @@ const logout = () => {
     token = ""
     //make cookie instantly expire thus get deleted
     document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;"
-    console.log("Logging Out...")
     return "done"
 }
 const login = async (newUser) => {
     //do some stuff with cookies
-    console.log(newUser)
+
     try {
         const response2 = await axios.post(serverUrl + "auth/login/", newUser)
         token = response2.data.token
@@ -53,7 +52,7 @@ const login = async (newUser) => {
     
         return response2
     } catch (e){
-        console.log(e.response.status)
+
         return e.response
     }
     
@@ -66,7 +65,6 @@ const getJournalEntries = async () => {
         const response = await axios.get(serverUrl+"api/journal", { headers: { "Authorization": `Bearer ${token}` } })
         return response 
     } catch (e){
-        console.log(e.response)
         return e.response
     }
 }
@@ -77,7 +75,6 @@ const getFollowupJournalEntries = async () => {
         const response = await axios.get(serverUrl+"api/followup", { headers: { "Authorization": `Bearer ${token}` } })
         return response 
     } catch (e){
-        console.log(e.response)
         return e.response
     }
 }
@@ -88,7 +85,6 @@ const getJournalEntry = async (id) => {
         const response = await axios.get(serverUrl+`api/journal/${id}`, { headers: { "Authorization": `Bearer ${token}` } })
         return response 
     } catch (e){
-        console.log(e.response)
         return e.response
     }
 }
@@ -126,7 +122,6 @@ const modifyEntry = async (updatedEntry,id) => {
 
         return response2
     } catch (e) {
-        console.log(e)
         return e.response
     }
 }
@@ -138,7 +133,6 @@ const deleteEntry = async (id) => {
         }
         return response2
     } catch (e) {
-        console.log(e)
         return e.response
     }
 }
@@ -158,7 +152,6 @@ const createEntry = async (newEntry) => {
 
         return response2
     } catch (e) {
-        console.log(e)
         return e.response
     }
 }

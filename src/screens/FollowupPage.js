@@ -5,6 +5,7 @@ import { useNavigate} from "react-router-dom"
 import FollowUpListItem from '../components/FollowUpListItem';
 import AxiosService from '../AxiosService';
 import SideBar from '../components/SideBar';
+import createIcon from '../Assets/plus_icon.png';
 
 const FollowupPage = () => {
     const navigate = useNavigate()
@@ -21,7 +22,6 @@ const FollowupPage = () => {
                 window.alert("Error: Please log in again")
                 navigate('/login')
             }
-            console.log(response.data.entries2)
             response.data.entries2.forEach((x,index) => {
                 let date  = new Date (x.date)
                 response.data.entries2[index].date = date.toGMTString().substring(0,date.toGMTString().length-3)
@@ -39,22 +39,23 @@ const FollowupPage = () => {
         <SideBar shrink={shrink} setShrink={setShrink}></SideBar>
         <section className={shrink ? `shrink` : `Page`} >
         <div className='topbar'>
-
+{/* 
                 <div className='row'>
                     <div className='five columns'>
-                        
+                         */}
                     <p> {AxiosService.getName}</p>
+                    {/* </div> */}
+                    {/* <div className='five columns'> */}
+                        <h1> Come back when... </h1>
                     </div>
-                    <div className='five columns main'>
-                        <h1> Come back when....</h1>
-                    </div>
-                </div>
-        </div>
+                {/* </div>  */}
+        {/* </div> */}
             
         <section className='MainContent'>
+            <div className='innerContent'>
             <div className='row'>
                 <div className=' six columns' >
-                    <table class="followupTable">
+                    <table className="followupTable">
                         <caption>LEVEL</caption>
                         <thead>
                             <tr>
@@ -65,13 +66,13 @@ const FollowupPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                        {lvlItems.map(item => <FollowUpListItem id = {item.id} name={item.title} tags={item.tags} clickFunc={() => entryClicked(item.id)} followup={item.followup.lvl} date={item.date} />  )}
+                        {lvlItems.map(item => <FollowUpListItem key={item.id} id = {item.id} name={item.title} tags={item.tags} clickFunc={() => entryClicked(item.id)} followup={item.followup.lvl} date={item.date} />  )}
                         <tr></tr>
                         </tbody>
                     </table>
                 </div>
                 <div className=' six columns' >
-                    <table class="followupTable">
+                    <table className="followupTable">
                         <caption>DATE</caption>
                         <thead>
                             <tr>
@@ -82,7 +83,7 @@ const FollowupPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                        {dateItems.map(item => <FollowUpListItem id = {item.id} name={item.title} tags={item.tags} followup={item.followup.date} clickFunc={() => entryClicked(item.id)} date={item.date} />  )}
+                        {dateItems.map(item => <FollowUpListItem key={item.id} id = {item.id} name={item.title} tags={item.tags} followup={item.followup.date} clickFunc={() => entryClicked(item.id)} date={item.date} />  )}
                         <tr></tr>
                         </tbody>
                     </table>
@@ -90,11 +91,12 @@ const FollowupPage = () => {
             </div>
 
 
-        </section>
-        <div className="createBtnSection">
-        <button className="editBtn" onClick={() => navigate('/create')} >Create note</button>
-
+            <img src={createIcon} className={shrink ? ` createBtn shrink` : `createBtn`} onClick={() => navigate('/create')}/>
         </div>
+        </section>
+        {/* <div className="createBtnSection">
+
+        </div> */}
         
     </section>
         </section>

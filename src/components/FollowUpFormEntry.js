@@ -4,7 +4,7 @@ const FollowUpFormEntry = (props) => {
     const {updateFn, itemDetails, editMode, followUpSet} = props
 
   return (
-    <section className='followupForm'>
+    <section className={editMode ? `followupFormEdit` : `followupForm`}>
         {editMode && <div>
             <h5> Follow up</h5>
             <label> Level</label>

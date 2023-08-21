@@ -15,7 +15,6 @@ const SideBar = (props) => {
         navigate('/')
     }
     const sidebarActivate = () => {
-        console.log(shrink)
         if(shrink) {
             sidebarElement.current.style.width = "50px";
             setShrink(false)

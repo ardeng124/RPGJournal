@@ -29,10 +29,10 @@ const HomePage = () => {
                 <div className='row'>
                     
                     <div className='three columns'> 
-                        <button class="button-primary" onClick={() => navigate("/login")}>Login</button>
+                        <button className="button-primary" onClick={() => navigate("/login")}>Login</button>
                     </div>
                     <div className='three columns'> 
-                        <button class="button-primary" onClick={() => navigate("/signup")}>Sign up</button>
+                        <button className="button-primary" onClick={() => navigate("/signup")}>Sign up</button>
                     </div>
                 </div>
                     

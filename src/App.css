@@ -3,6 +3,27 @@
   margin-right: auto;
 
 }
+
+button:hover {
+  animation: btnHover .5s linear;
+  animation-fill-mode:both;
+  animation-direction:alternate;
+
+
+}
+
+@keyframes btnHover {
+  from {
+    border-radius:0px;
+
+  }
+
+  to {
+    border-radius:30px;
+
+  }
+}
+
 .HomePage img{
   width:300px;
   height:300px;
@@ -74,7 +95,7 @@
   /* position: relative; */
   /* filter: invert(100%); */
   left:0px;
-  position: absolute;
+  position: fixed;
 
 }
  .sidebarIcon {
@@ -107,6 +128,10 @@
 .topbar {
   margin-top:20px;
   margin-bottom:40px;
+  text-align: center;
+}
+.topbar h1 {
+  text-align: center;
 }
 
 .usrImg {
@@ -132,11 +157,17 @@
 .JournalListItem{
   width:80%;
   cursor: pointer;
+
 }
+/* .JournalListItem td {
+  padding-left:4px !important;
+
+} */
 .JournalListItem:hover{
   text-decoration: underline;
   color: #818181;
   transition: 0.3s;
+  background-color: #f4eeee;
 }
 .centerItems {
   align-items: center;
@@ -154,7 +185,7 @@ text-align: left;
 .EntryPage input {
   padding:20px;
   margin:auto;
-  width:80%;
+  width:50%;
   text-align: left;
   overflow: auto;
   overflow-wrap: break-word
@@ -173,6 +204,7 @@ text-align: left;
 .titleInput {
   font-size: 5.0rem; line-height: 1.2;  letter-spacing: -.1rem;
   text-align: center !important;
+
 }
 .buttonSection {
 
@@ -199,13 +231,15 @@ text-align: left;
 .createBtnSection button {
   float:right
 }
-.deleteButton {
-  background-color: rgb(240, 150, 150);
-  color: white;
-  /* left: 50rem; */
-}
+
 .EntryPage .MainContent p {
   white-space: pre-line;
+}
+
+.entryContent {
+  /* background-color: rgb(252, 251, 248); */
+  border-radius: 15px;
+  margin-bottom:20px;
 }
 
 .AboutPage .img {
@@ -219,7 +253,7 @@ text-align: left;
   width:90%;
   margin: auto;
 }
-.AboutPage .five.columns.img {
+.AboutPage .six.columns.img {
   text-align: center;
 }
 .AboutPage .text {
@@ -228,6 +262,11 @@ text-align: left;
   /* margin-left: 20%; */
   margin:10px;
   padding:30px;
+  font-size: 1.5em;
+}
+.followupFormEdit p {
+  text-align: center !important;
+  font-weight: bold;
 }
 .followupForm {
   width:60%;
@@ -235,12 +274,27 @@ text-align: left;
   margin:auto;
   margin-top:10px;
   padding:10px;
+  /* background-color: rgb(255, 244, 240); */
+  border-radius: 10px;
+  border:0.5px solid rgb(8, 8, 8,0.3)
+}
+.followupFormEdit{
+  width:60%;
+  text-align: center;
+  margin:auto;
+  margin-top:10px;
+  padding:10px;
+  /* background-color: rgb(255, 244, 240); */
+  border-radius: 10px;
+  border:0.5px solid rgb(8, 8, 8,0.3)
 }
 .errorText {
   color:red;
   text-align: center !important;
   font-weight: 600;
   /* text-shadow: 1px 1px 20px black; */
+  background-color: rgb(244, 197, 178);
+  border:4px solid red
 }
 .FollowUpPage .main {
   margin-left: 0px !important;
@@ -253,6 +307,7 @@ text-align: left;
   text-decoration: underline;
   color: #818181;
   transition: 0.3s;
+  background-color: #f4eeee;
 }
 
 .followupTable{
@@ -276,3 +331,93 @@ text-align: left;
 .titleTh{
   min-width:13rem;
 }
+.innerContent .createBtn {
+  position: fixed;
+  right: 20px;
+  top:90vh;
+  margin-left:10px;
+  width:60px;
+ 
+}
+.createBtn{
+  cursor: pointer;
+  border:1px solid rgba(97, 97, 97, 0.568);
+  border-radius: 25px;
+  margin:10px
+}
+.createBtn:hover{
+  background-color: rgb(169, 169, 169);
+  transition: 0.3s;
+  border:1px solid rgba(97, 97, 97);
+}
+.deleteButton {
+  background-color: rgb(240, 150, 150);
+  color: white;
+  /* left: 50rem; */
+}
+/* .editBtn{
+  width:60px;
+  cursor: pointer;
+  border:1px solid rgba(58, 240, 3, 0.568);
+  border-radius: 5px;
+  margin:10px
+}
+.editBtn:hover{
+  background-color: rgb(238, 235, 190);
+  transition: 0.3s;
+  border:1px solid rgba(58, 240, 3,);
+}
+.cancelBtn{
+  width:60px;
+  cursor: pointer;
+  border:1px solid rgba(240, 106, 3, 0.568);
+  border-radius: 5px;
+  margin:10px
+}
+.cancelBtn:hover{
+  background-color: rgb(238, 190, 190);
+  transition: 0.3s;
+  border:1px solid rgba(240, 106, 3)
+}
+
+.acceptBtn{
+  width:60px;
+  cursor: pointer;
+  border:1px solid rgba(23, 240, 3, 0.568);
+  border-radius: 5px;
+  margin:10px
+}
+.acceptBtn:hover{
+  background-color: rgb(126, 247, 134);
+  transition: 0.3s;
+  border:1px solid rgba(240, 106, 3)
+}
+
+.deleteBtn{
+  width:60px;
+  cursor: pointer;
+  border:1px solid rgba(240, 106, 3, 0.568);
+  border-radius: 5px;
+  margin:10px
+}
+.deleteBtn:hover {
+  background-color: rgb(240, 150, 150);
+  transition: 0.3s;
+  border:1px solid rgba(240, 106, 3)
+} */
+
+
+/* tr:hover td{
+  background-color: #f4eeee;
+  transition:0.1s
+}
+td:first-child {
+
+  border-top-left-radius: 15px; 
+  border-bottom-left-radius: 15px;
+}
+td:last-child {
+
+  border-bottom-right-radius: 15px; 
+  border-top-right-radius: 15px; 
+} */

@@ -52,10 +52,13 @@ const CreateNotePage = () => {
                 return
             }
         }
-        console.log(formInfo)
         AxiosService.createEntry(formInfo).then(response => {
             if(response.status != 201) {
-                window.alert('error creating')
+                if (response.data.status == "mising content") setError("Please include content for the note");
+                if (response.data.status == "mising title") setError("Please include a title for the note");
+                
+
+                else window.alert('error creating')
                 //TODO: make a proper way of showing errors
             } else {
 
@@ -73,23 +76,24 @@ const CreateNotePage = () => {
         <section className={shrink ? `shrink` : `Page`} >
         <div className='topbar'>
 
-                <div className='row '>
+                {/* <div className='row '>
                     <div className='three columns'>
                     <p> {AxiosService.getName}</p>
-                    </div>
-                    <div className='five columns centeredTitle '>
+                    </div> */}
+                    {/* <div className='five columns centeredTitle '> */}
+                    <div className=' centeredTitle '>
                     <input className="titleInput" name ='title' onChange={updateField} placeholder="Title"></input>
 
                     </div>
                 </div>
-        </div>
+        {/* </div> */}
             
         <section className='MainContent'>
         <textarea name ='content' onChange={updateField} placeholder="enter note information here"></textarea>
+        {errorMsg != "" && <p className="errorText"> {errorMsg}</p>}
         <label> Enable follow up?</label>
         <input type="checkbox" onChange={updateField} defaultChecked={itemDetails.followup.followup} name="followupCheck"/>
         {followupSet && <FollowUpFormEntry updateFn = {updateField} editMode={true} itemDetails={itemDetails.followup}/>}
-        <p className="errorText"> {errorMsg}</p> 
         </section>
         <div className="createBtnSection">
         <button className="" onClick={() => navigate('/dashboard')}>Cancel</button>
