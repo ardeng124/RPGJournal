@@ -8,8 +8,6 @@ button:hover {
   animation: btnHover .5s linear;
   animation-fill-mode:both;
   animation-direction:alternate;
-
-
 }
 
 @keyframes btnHover {
@@ -24,6 +22,9 @@ button:hover {
   }
 }
 
+.bold-text {
+  font-weight: bold;
+}
 .HomePage img{
   width:300px;
   height:300px;
@@ -177,7 +178,6 @@ button:hover {
   margin:auto;
 text-align: left;
   width:80%;
-
 }
 .EntryPage .MainContent {
   text-align: center;
@@ -189,6 +189,14 @@ text-align: left;
   text-align: left;
   overflow: auto;
   overflow-wrap: break-word
+}
+.EntryPage input:focus {
+  background-color: #f3f3ee;
+  transition:0.3s;
+}
+.EntryPage textarea:focus {
+  background-color: #f3f3ee;
+  transition:0.3s
 }
 .EntryPage textarea {
   padding:20px;
@@ -208,11 +216,13 @@ text-align: left;
 }
 .buttonSection {
 
-  position: absolute;
-  left:20rem;
+  /* position: absolute; */
+  /* left:20rem; */
+  position: relative;
   width: 80%;
   margin: auto;
   margin-top: 48px;
+  bottom:3vh;
 }
 .buttonSection button {
   margin:5px;
@@ -262,22 +272,31 @@ text-align: left;
   /* margin-left: 20%; */
   margin:10px;
   padding:30px;
-  font-size: 1.5em;
+  /* font-size: 1.5em; */
 }
 .followupFormEdit p {
   text-align: center !important;
   font-weight: bold;
 }
 .followupForm {
-  width:60%;
+  width:40%;
   text-align: center;
   margin:auto;
   margin-top:10px;
   padding:10px;
   /* background-color: rgb(255, 244, 240); */
   border-radius: 10px;
-  border:0.5px solid rgb(8, 8, 8,0.3)
+  border:0.5px solid rgb(8, 8, 8,0.3);
+  background-color:#efefe4
 }
+.followupForm p {
+  text-align: center;
+}
+.EntryPage .centeredTitle {
+  padding:15px;
+  padding-top:30px;
+}
+
 .followupFormEdit{
   width:60%;
   text-align: center;
@@ -311,8 +330,10 @@ text-align: left;
 }
 
 .followupTable{
-  width:80%;
-  margin:auto;
+  /* width:88%; */
+  width:40vw;
+  /* margin:auto; */
+  margin-left: 60px;
   margin-top:50px;
 }
 .FollowUpPage .MainContent {
@@ -334,10 +355,13 @@ text-align: left;
 .innerContent .createBtn {
   position: fixed;
   right: 20px;
-  top:90vh;
+  top:88vh;
   margin-left:10px;
   width:60px;
  
+}
+.FollowUpPage .six.columns {
+  margin-left: 0px !important;
 }
 .createBtn{
   cursor: pointer;
@@ -354,6 +378,32 @@ text-align: left;
   background-color: rgb(240, 150, 150);
   color: white;
   /* left: 50rem; */
+}
+
+.textContent {
+  margin-bottom:40px !important;
+}
+
+.searchFormObject {
+  text-align: center;
+}
+
+.FollowUpPage h3 {
+  text-align: center;
+  margin-top:50px;
+
+}
+
+.searchFormInput {
+  width:80%;
+}
+.subContent {
+  /* max-width: 15rem;; */
+  font-size:small;
+  font-weight: 200;
+}
+.nameColumn {
+  max-width:16rem;
 }
 /* .editBtn{
   width:60px;

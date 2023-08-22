@@ -90,18 +90,21 @@ const getJournalEntry = async (id) => {
 }
 
 const register = async (newUser) => {
-    //do some stuff with cookies
-    const response2 = await axios.post(serverUrl + "auth/register/", newUser)
-    if (response2.data.status == 409){
+    try {
+        const response2 = await axios.post(serverUrl + "auth/register/", newUser)
+        token = response2.data.token
+        // localStorage.setItem('token',token)
+        const expiration_date = new Date()
+        let expires = new Date(Date.now() + 86400 * 1000).toUTCString()
+        document.cookie = `token=${token}; SameSite=None` + expires + ";path=/;"
+        localStorage.setItem('username',username)
         return response2
+
+    } catch (e) {
+        return e.response
     }
-    token = response2.data.token
-    // localStorage.setItem('token',token)
-    const expiration_date = new Date()
-    let expires = new Date(Date.now() + 86400 * 1000).toUTCString()
-    document.cookie = `token=${token}; SameSite=None` + expires + ";path=/;"
-    localStorage.setItem('username',username)
-    return response2
+
+   
 }
 
 const modifyEntry = async (updatedEntry,id) => {

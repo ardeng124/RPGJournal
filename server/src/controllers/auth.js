@@ -9,10 +9,12 @@ const createUser = async(request, response)  => {
     const existingUser = await models.User.findOne({
         "username":body.username
     })
-    if(existingUser){
-        return response.json({
+    const existingUser2 = await models.User.findOne({
+        "email":body.email
+    })
+    if(existingUser || existingUser2){
+        return response.status(409).json({
             error: 'username taken',
-            status: 409
           })
     }
     const passwordHash = await Util.hashPassword(body.password)

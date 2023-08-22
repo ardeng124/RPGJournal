@@ -13,6 +13,34 @@ const FollowupPage = () => {
     const [journalItems, setJournalItems] = useState([])
     const [lvlItems, setlvlItems] = useState([])
     const [dateItems, setDateItems] = useState([])
+    const [searchValDate, setSearchValDate] = useState("")
+    const [searchValLvl, setSearchValLvl] = useState("")
+
+    const filterItemsLvl = (items, query) => {
+       if (!query) return items 
+        console.log(query)
+       
+        return items.filter((items) => {
+            const itemLvl = items.followup.lvl.toString().toLowerCase()
+            const itemName = items.title.toString().toLowerCase()
+            return itemName.includes(query.toLowerCase()) || itemLvl.includes(query.toLowerCase())
+       }) 
+     }
+     const filterItemsDate = (items, query) => {
+        if (!query) return items 
+         console.log(query)
+        
+         return items.filter((items) => {
+             const itemName = items.title.toString().toLowerCase()
+             return itemName.includes(query.toLowerCase()) 
+        }) 
+      }
+    const filteredItemsDate = filterItemsDate(dateItems, searchValDate);
+    const filteredItemsLvl = filterItemsLvl(lvlItems, searchValLvl);
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+    }
     const entryClicked = (id) => {
         navigate(`/journal/${id}`)
     }
@@ -55,8 +83,19 @@ const FollowupPage = () => {
             <div className='innerContent'>
             <div className='row'>
                 <div className=' six columns' >
+                    <h3>LEVEL</h3>
+                <form  className = 'searchFormObject' onSubmit={handleSubmit}>
+                        <input
+                            type="text"
+                            id="header-search"
+                            placeholder="Search for a note title or specific level"
+                            className="searchFormInput"
+                            value = {searchValLvl} onChange={(e) => {setSearchValLvl(e.target.value)}}
+                        />
+                         
+                    </form>
                     <table className="followupTable">
-                        <caption>LEVEL</caption>
+                        {/* <caption>LEVEL</caption> */}
                         <thead>
                             <tr>
                             <th className='titleTh'>Title</th>
@@ -66,14 +105,25 @@ const FollowupPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                        {lvlItems.map(item => <FollowUpListItem key={item.id} id = {item.id} name={item.title} tags={item.tags} clickFunc={() => entryClicked(item.id)} followup={item.followup.lvl} date={item.date} />  )}
+                        {filteredItemsLvl.map(item => <FollowUpListItem key={item.id} content={item.content} id = {item.id} name={item.title} tags={item.tags} clickFunc={() => entryClicked(item.id)} followup={item.followup.lvl} date={item.date} />  )}
                         <tr></tr>
                         </tbody>
                     </table>
                 </div>
                 <div className=' six columns' >
+                <h3>DATE</h3>
+                <form  className = 'searchFormObject' onSubmit={handleSubmit}>
+                        <input
+                            type="text"
+                            id="header-search"
+                            placeholder="Search for a note title"
+                            className="searchFormInput"
+                            value = {searchValDate} onChange={(e) => {setSearchValDate(e.target.value)}}
+                        />
+                         
+                    </form>
                     <table className="followupTable">
-                        <caption>DATE</caption>
+
                         <thead>
                             <tr>
                             <th className='titleTh'>Title</th>
@@ -83,7 +133,7 @@ const FollowupPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                        {dateItems.map(item => <FollowUpListItem key={item.id} id = {item.id} name={item.title} tags={item.tags} followup={item.followup.date} clickFunc={() => entryClicked(item.id)} date={item.date} />  )}
+                        {filteredItemsDate.map(item => <FollowUpListItem key={item.id} content={item.content}  id = {item.id} name={item.title} tags={item.tags} followup={item.followup.date} clickFunc={() => entryClicked(item.id)} date={item.date} />  )}
                         <tr></tr>
                         </tbody>
                     </table>

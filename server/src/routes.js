@@ -1,6 +1,7 @@
 const express = require('express')
 const auth = require('./controllers/auth')
 const journal = require('./controllers/journal')
+const tags = require('./controllers/tags')
 
 
 const router = express.Router()
@@ -21,6 +22,10 @@ router.put('/api/journal/:id', journal.modifyJournalEntry)
 router.delete('/api/journal/:id', journal.deleteJournalEntry)
 
 router.get('/api/auth/', auth.validate)
+
+router.get('/api/tags/', tags.getTags)
+router.post('/api/tags/', tags.addTags)
+router.delete('/api/tags/:id', tags.deleteTags)
 
 
 module.exports = router 

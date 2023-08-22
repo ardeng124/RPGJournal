@@ -7,6 +7,7 @@ import editIcon from '../Assets/pencilangled.png';
 import cancelIcon from '../Assets/cross_icon.png';
 import delIcon from '../Assets/Trash.png';
 import tickIcon from '../Assets/tick_icon.png';
+import FollowUpComponent from "../components/FollowUpComponent";
 
 const EntryPage = () => {
     const navigate = useNavigate()
@@ -68,9 +69,9 @@ const EntryPage = () => {
                 //TODO: make a proper way of showing errors
 
             } else {
-                setItemDetails(response.data.entryNew)
+                setItemDetails(response.data.entry.entryNew)
                 setEditMode(false)
-                setFollowUp(response.data.entryNew.followup.followup)
+                setFollowUp(response.data.entry.entryNew.followup.followup)
             }
         })
     }
@@ -97,11 +98,11 @@ const EntryPage = () => {
                 window.alert("specified entry does not exist")
                 navigate('/dashboard')
             }
-            const date  = new Date (response.data.date)
-            response.data.date = date.toGMTString()
-            setItemDetails(response.data)
-            setInitialState({title:itemDetails.title, content:itemDetails.content, followupCheck:response.data.followup.followup, followupDate:response.data.followup.date, followupLvl:response.data.followup.lvl})
-            setFollowUp(response.data.followup.followup)
+            const date  = new Date (response.data.entry.date)
+            response.data.entry.date = date.toGMTString()
+            setItemDetails(response.data.entry)
+            setInitialState({title:itemDetails.title, content:itemDetails.content, followupCheck:response.data.entry.followup.followup, followupDate:response.data.entry.followup.date, followupLvl:response.data.entry.followup.lvl})
+            setFollowUp(response.data.entry.followup.followup)
             
         })
     },[])
@@ -126,13 +127,15 @@ const EntryPage = () => {
         </div> */}
             
         <section className='MainContent'>
-            {editMode ? <textarea name ='content' className="entryContent" onChange={updateField} defaultValue={itemDetails.content}></textarea>: <p className="">{itemDetails.content} </p>}
+            {followupSet & !editMode ? <FollowUpComponent itemDetails={itemDetails.followup}/> : <span></span>}
+
+            {editMode ? <textarea name ='content' className="entryContent" onChange={updateField} defaultValue={itemDetails.content}></textarea>: <p className="textContent">{itemDetails.content} </p>}
             {errorMsg != "" && <p className="errorText"> {errorMsg}</p>}
 
             {editMode && < div> <label> Enable follow up?</label>
                 <input type="checkbox" onChange={updateField} defaultChecked={itemDetails.followup.followup} name="followupCheck"/>
             </div>}
-        {followupSet && <FollowUpFormEntry updateFn = {updateField} editMode={editMode} itemDetails={itemDetails.followup}/>}
+        {followupSet & editMode ? <FollowUpFormEntry updateFn = {updateField} editMode={editMode} itemDetails={itemDetails.followup}/> : <span></span>}
 
         </section>
         <div className="row buttonSection" >

@@ -46,12 +46,13 @@ userSchema.set('toJSON', {
 const User = mongoose.model("User", userSchema);
 
 const tagSchema = new mongoose.Schema({
-  name: {type: String, unique: true},
+  name: {type: String, unique:false},
   entries: [
     {
       type: Object,
       ref: 'Journal'
     }],
+    owner: {type: mongoose.Types.ObjectId, ref: 'User'},
   })
 
   tagSchema.set('toJSON', {

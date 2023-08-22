@@ -46,19 +46,26 @@ const SignupPage = () => {
             AxiosService.register(formInfo)
 
         .then(response => {
-            if(response.status=200) {
+
+            if(response.status==200) {
                 setButtonDisabled(true)
                 navigate("/dashboard")
+            } 
+            if (response.status==409) {
+                setError("Username or email taken")
+
             }
         })
         } else {
+            setError("Passwords do not match")
+            return
             //todo: Error handling
             //INSERT ERROR HANDLING
         }
     }
   return (
-    <section className='LoginPage'>
         <body>
+    <section className='LoginPage'>
             <div className='container'>
         <form onSubmit={formHandler}>
         <div className="row">
@@ -97,8 +104,8 @@ const SignupPage = () => {
         </form>
         {errorMsg != "" && <p className="errorText"> {errorMsg}</p>}
         </div>
-        </body>
     </section>
+        </body>
   )
 }
 export default SignupPage

@@ -1,5 +1,6 @@
 const models = require('../models')
 const auth = require('./auth')
+const { getTags } = require('./tags')
 const Util = require('./util')
 
 const getJournalEntries = async (request, response) => {
@@ -52,7 +53,9 @@ const getJournalEntry = async (request, response) => {
      }).clone();
      const userFind = await models.User.findById(decodedToken1.id)
      if (entry.owner != userFind.id) return response.status(403).json({"error":"forbidden"})
-     response.status(200).json(entry)
+     const tags = await models.Tag.find({owner:userFind.id})
+     const finalResp = {entry, tags}
+     response.status(200).json(finalResp)
 }
 
 const addJournalEntry = async (request, response) => {
