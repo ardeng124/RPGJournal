@@ -9,7 +9,12 @@ import delIcon from '../Assets/Trash.png';
 import tickIcon from '../Assets/tick_icon.png';
 import FollowUpComponent from "../components/FollowUpComponent";
 
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
+import TagListComponent from "../components/TagListComponent";
+
 const EntryPage = () => {
+    const animatedComponents = makeAnimated();
     const navigate = useNavigate()
     const [editMode, setEditMode] = useState(false)
     const [itemDetails, setItemDetails] = useState({
@@ -22,11 +27,28 @@ const EntryPage = () => {
         followup: {followup:false, date:"null",lvl:"null"}
     })
     const id = useParams().id
-    const [initialState, setInitialState] = useState({content:'', title:'', followupCheck:"null", followupDate:"null", followupLvl:"null"})
+    const [initialState, setInitialState] = useState({content:'', title:'', followupCheck:"null", followupDate:"null", followupLvl:"null", tags:null})
     const [formInfo, setFormInfo] = useState(initialState)
     const [errorMsg, setError] = useState("")
     const [followupSet, setFollowUp] = useState(itemDetails.followup.followup)
+    const [tagsArr,setTags] = useState([])
+    const [selected, setSelected] = useState(null);
+    
+    const [shrink, setShrink] = useState(false);
+    
+    const handleChange = (selectedOption) => {
+        setSelected(selectedOption);
+        setFormInfo({...formInfo, tags:selected})
+    }
+    
+    const getTagNames = () => {
+        let arr = []
+        tagsArr.forEach(x =>arr.push({value: x.id, label:x.name}))
+        return arr
+    }
+    
     const updateField = (event) => {
+        console.log(selected)
         // which input element is this
         const name = event.target.attributes.name.value
         if (name === "title") {
@@ -45,9 +67,9 @@ const EntryPage = () => {
             if(event.target.checked) setFollowUp(true);
             if(!event.target.checked) setFollowUp(false);
             setFormInfo({...formInfo, followupCheck:!followupSet})
-
         }
     }
+
     const cancelEdits = (event) => {
         setEditMode(false); 
         setError(""); 
@@ -62,23 +84,33 @@ const EntryPage = () => {
             }
         }
         setError(""); 
-
-        AxiosService.modifyEntry(formInfo, id).then(response => {
+        let tagArray = []
+        // selected.forEach(x => {
+        //     tagArray.push({name:selected.label, id:selected.value})
+        // })
+        selected.forEach(x =>tagArray.push({id: x.value, name:x.label}))
+        setFormInfo({...formInfo, tags:tagArray})
+        AxiosService.modifyEntry({...formInfo, tags:tagArray}, id).then(response => {
+            if(response.status== 404 && response.error == "could not add tag") {
+                setError("Could not modify tags")
+                return
+            }
             if(response.status != 201) {
                 window.alert('error updating')
                 //TODO: make a proper way of showing errors
 
             } else {
-                setItemDetails(response.data.entry.entryNew)
+                setItemDetails(response.data.entryNew)
                 setEditMode(false)
-                setFollowUp(response.data.entry.entryNew.followup.followup)
+                setFollowUp(response.data.entryNew.followup.followup)
             }
         })
     }
     const deleteEntry = (event) => {
         AxiosService.deleteEntry(id).then(response => {
             if(response.status != 200) {
-                window.alert('error deleting')
+                setError("Error deleting")
+                // window.alert('error deleting')
                 //TODO: make a proper way of showing errors
 
             } else {
@@ -86,7 +118,10 @@ const EntryPage = () => {
             }
         })
     }
-   
+   const tagClicked = (id) => {
+    navigate(`/tags/${id}`)
+
+   }
     useEffect(() => {
 
         AxiosService.getJournalEntry(id).then(response => {
@@ -97,16 +132,19 @@ const EntryPage = () => {
             if(response.status == 404) {
                 window.alert("specified entry does not exist")
                 navigate('/dashboard')
-            }
+            }                
             const date  = new Date (response.data.entry.date)
             response.data.entry.date = date.toGMTString()
             setItemDetails(response.data.entry)
+            setTags(response.data.tags)
             setInitialState({title:itemDetails.title, content:itemDetails.content, followupCheck:response.data.entry.followup.followup, followupDate:response.data.entry.followup.date, followupLvl:response.data.entry.followup.lvl})
             setFollowUp(response.data.entry.followup.followup)
+            let arr = []
+            response.data.entry.tags.forEach(x =>arr.push({value: x.id, label:x.name}))
+            setSelected(arr)
             
         })
     },[])
-    const [shrink, setShrink] = useState(false);
     return (
         <section className='EntryPage'>
         <SideBar shrink={shrink} setShrink={setShrink}></SideBar>
@@ -127,6 +165,8 @@ const EntryPage = () => {
         </div> */}
             
         <section className='MainContent'>
+        {editMode ? <Select className="SelectTags" value={selected} components={animatedComponents} closeMenuOnSelect={false} placeholder="Tags"
+            options={getTagNames()} onChange={handleChange} autoFocus={true} isMulti name="tags" /> :<TagListComponent tagList={itemDetails.tags} tagClicked = {tagClicked}/>}
             {followupSet & !editMode ? <FollowUpComponent itemDetails={itemDetails.followup}/> : <span></span>}
 
             {editMode ? <textarea name ='content' className="entryContent" onChange={updateField} defaultValue={itemDetails.content}></textarea>: <p className="textContent">{itemDetails.content} </p>}

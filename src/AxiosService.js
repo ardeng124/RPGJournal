@@ -103,20 +103,17 @@ const register = async (newUser) => {
     } catch (e) {
         return e.response
     }
-
-   
 }
 
 const modifyEntry = async (updatedEntry,id) => {
 
+    refreshToken()
     let followupItem = {
         followup:updatedEntry.followupCheck,
         date:updatedEntry.followupDate,
         lvl:updatedEntry.followupLvl
     }
-
     if(followupItem.followup != 'null') updatedEntry.followup = followupItem
-
     try {
         const response2 = await axios.put(serverUrl +`api/journal/${id}`, updatedEntry , { headers: { "Authorization": `Bearer ${token}` } })
         if (response2.data.status == 409){
@@ -129,6 +126,7 @@ const modifyEntry = async (updatedEntry,id) => {
     }
 }
 const deleteEntry = async (id) => {
+    refreshToken()
     try {
         const response2 = await axios.delete(serverUrl +`api/journal/${id}`, { headers: { "Authorization": `Bearer ${token}` } })
         if (response2.data.status == 409){
@@ -140,7 +138,7 @@ const deleteEntry = async (id) => {
     }
 }
 const createEntry = async (newEntry) => {
-
+    refreshToken()
     let followupItem = {
         followup:newEntry.followupCheck,
         date:newEntry.followupDate,
@@ -159,6 +157,43 @@ const createEntry = async (newEntry) => {
     }
 }
 
+
+const createTag = async (newTag) => {
+    refreshToken()
+    const tag = {"name":newTag}
+    try {
+        const response2 = await axios.post(serverUrl +`api/tags/`, tag , { headers: { "Authorization": `Bearer ${token}` } })
+        if (response2.data.status == 409){
+            return response2
+        }
+        return response2
+    } catch (e) {
+        return e.response
+    }
+}
+
+const getTags = async () => {
+    refreshToken()
+    try {
+        const response = await axios.get(serverUrl+"api/tags/", { headers: { "Authorization": `Bearer ${token}` } })
+        return response 
+    } catch (e){
+        return e.response
+    }
+}
+
+const deleteTag = async (id) => {
+    refreshToken()
+    try {
+        const response2 = await axios.delete(serverUrl +`api/tags/${id}`, { headers: { "Authorization": `Bearer ${token}` } })
+        if (response2.data.status == 409){
+            return response2
+        }
+        return response2
+    } catch (e) {
+        return e.response
+    }
+}
 export default {
     getJournalEntries,
     getJournalEntry,
@@ -169,5 +204,8 @@ export default {
     modifyEntry,
     createEntry,
     deleteEntry,
-    getFollowupJournalEntries
+    getFollowupJournalEntries,
+    createTag,
+    getTags,
+    deleteTag
 }

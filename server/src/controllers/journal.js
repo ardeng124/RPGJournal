@@ -114,12 +114,23 @@ const modifyJournalEntry = async (request, response) => {
      }).clone();
      const userFind = await models.User.findById(decodedToken1.id)
 
-     if (entry.owner != userFind.id) return response.status(403).json({error:"forbidden"})
+    if (entry.owner != userFind.id) return response.status(403).json({error:"forbidden"})
+    if (entry.tags) {
+        let tags = []
+        entry.tags.forEach((tag) => {
+            try {
+                const currTag = models.Tag.findById(tag.id)
+                tags.push(currTag)
 
+            } catch (e) {
+                response.status(404).json({error:"could not add tag"})
+            }
+        })
+    }
     const entryNew = {
         "title": body.title ? body.title : entry.title,
         "content" : body.content ? body.content :entry.content,
-        "tags": entry.tags, 
+        "tags": body.tags? body.tags : tags, 
         "date":entry.date, 
         "id": body.id,
         "owner": body.owner,

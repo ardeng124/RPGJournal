@@ -18,6 +18,8 @@ import CreateNotePage from './screens/CreateNotePage';
 
 import AboutPage from './screens/AboutPage';
 import FollowupPage from './screens/FollowupPage';
+import TagPage from './screens/TagPage';
+
 
 
 function App() {
@@ -32,6 +34,7 @@ function App() {
     <Route path="/create" element={<CreateNotePage />} />
     <Route path="/about" element={<AboutPage />} />
     <Route path="/followup" element={<FollowupPage />} />
+    <Route path="/tags" element={<TagPage />} />
 
     </Routes>
     
