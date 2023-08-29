@@ -15,7 +15,8 @@ const TagPage = () => {
     const [errorMsg, setError] = useState("")
     const [tagValue, setTagValue] = useState("")
     const [buttonDisabled, setButtonDisabled] = useState(false)
-  
+    const [loading, setLoading] = useState(false);
+
     const filterItems = (items, query) => {
        if (!query) {
          return tagList 
@@ -34,12 +35,14 @@ const TagPage = () => {
         navigate(`/tags/${id}`)
     }
     useEffect(() => {
+        setLoading(true)
         AxiosService.getTags().then(response => {
             if(response.status == 401) {
                 window.alert("Error: Please log in again")
                 navigate('/login')
             }
             setTagList(response.data.entries)
+            setLoading(false)
         })
     }, []);
 
@@ -85,6 +88,10 @@ const TagPage = () => {
     }
 
     return (
+        <div>
+        {loading && <div className="loader-container">
+      	  <div className="spinner"></div>
+        </div>}
     <section className='Dashboard'>
         <SideBar shrink={shrink} setShrink={setShrink}></SideBar>
         <section className={shrink ? `shrink` : `Page`} >
@@ -132,7 +139,7 @@ const TagPage = () => {
         
     </section>
         </section>
-    )
+   </div> )
 }
 
 export default TagPage

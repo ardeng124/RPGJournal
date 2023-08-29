@@ -8,11 +8,11 @@ import SideBar from '../components/SideBar';
 import createIcon from '../Assets/plus_icon.png';
 
 const Dashboard = () => {
-
     const navigate = useNavigate()
     const [shrink, setShrink] = useState(false);
     const [journalItems, setJournalItems] = useState([])
     const [searchVal, setSearchVal] = useState("")
+    const [loading, setLoading] = useState(false);
    
             
     const filterItems = (items, query) => {
@@ -34,6 +34,7 @@ const Dashboard = () => {
         navigate(`/journal/${id}`)
     }
     useEffect(() => {
+        setLoading(true)
         AxiosService.getJournalEntries().then(response => {
             if(response.status == 401) {
                 window.alert("Error: Please log in again")
@@ -44,10 +45,15 @@ const Dashboard = () => {
                 response.data.entries[index].date = date.toGMTString().substring(0,date.toGMTString().length-3)
             })
             setJournalItems(response.data.entries)
+            setLoading(false)
         })
     }, []);
 
     return (
+        <div>
+        {loading && <div className="loader-container">
+      	  <div className="spinner"></div>
+        </div>}
     <section className='Dashboard'>
         <SideBar shrink={shrink} setShrink={setShrink}></SideBar>
         <section className={shrink ? `shrink` : `Page`} >
@@ -99,6 +105,8 @@ const Dashboard = () => {
         
     </section>
         </section>
+      </div>
     )
+
 }
 export default Dashboard

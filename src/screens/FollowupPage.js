@@ -15,6 +15,7 @@ const FollowupPage = () => {
     const [dateItems, setDateItems] = useState([])
     const [searchValDate, setSearchValDate] = useState("")
     const [searchValLvl, setSearchValLvl] = useState("")
+    const [loading, setLoading] = useState(false);
 
     const filterItemsLvl = (items, query) => {
        if (!query) return items 
@@ -45,6 +46,7 @@ const FollowupPage = () => {
         navigate(`/journal/${id}`)
     }
     useEffect(() => {
+        setLoading(true)
         AxiosService.getFollowupJournalEntries().then(response => {
             if(response.status == 401) {
                 window.alert("Error: Please log in again")
@@ -58,11 +60,15 @@ const FollowupPage = () => {
 
             setlvlItems(response.data.entries2.filter(x => x.followup.lvl && x.followup.lvl != "null"))
             setDateItems(response.data.entries2.filter(x => x.followup.date && x.followup.date != "null"))
-
+            setLoading(false)
         })
     }, []);
     
     return (
+        <div>
+        {loading && <div className="loader-container">
+      	  <div className="spinner"></div>
+        </div>}
     <section className='FollowUpPage'>
         <SideBar shrink={shrink} setShrink={setShrink}></SideBar>
         <section className={shrink ? `shrink` : `Page`} >
@@ -150,7 +156,7 @@ const FollowupPage = () => {
         
     </section>
         </section>
-    )
+    </div>)
 }
 
 export default FollowupPage

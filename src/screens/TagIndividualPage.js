@@ -18,7 +18,8 @@ const TagIndividualPage = () => {
     const [newName, setNewName] = useState("")
     const [editMode, setEdit] = useState(false)
     const [buttonDisabled, setButtonDisabled] = useState(false)
-            
+    const [loading, setLoading] = useState(false);
+
     const filterItems = (items, query) => {
        if (!query) {
          return journalItems 
@@ -38,23 +39,33 @@ const TagIndividualPage = () => {
         navigate(`/journal/${id}`)
     }
     const editTag = () => {
+        if(buttonDisabled) return;
         setEdit(!editMode)
         if(editMode && newName != entry.name) {
             setButtonDisabled(true)
             setTimeout(() => setButtonDisabled(false),2000)
+            setLoading(true)
             AxiosService.editTag(id, newName).then(response => {
-                SetEntry(response.data.it)
-                journalItems.map(x => {
+                console.log(response)
+                let entryNew = entry
+                entryNew.name=newName
+                SetEntry(entryNew)
+                let newarr = journalItems
+                newarr.map(x => {
                     x.tags.map(y => {
                         if(y.id == id) {
-                            y.name = response.data.it.name
+                            y.name = newName
                         }
                     })
                 })
+                console.log(newarr)
+                setJournalItems(newarr)
+                setLoading(false)
             })
         }
     }
     useEffect(() => {
+        setLoading(true)
         setButtonDisabled(true)
         AxiosService.getTagJournalEntries(id).then(response => {
             if(response.status == 401) {
@@ -69,10 +80,15 @@ const TagIndividualPage = () => {
             SetEntry(response.data.entry)
             setNewName(response.data.entry.name)
             setButtonDisabled(false)
+            setLoading(false)
         })
     }, []);
 
     return (
+        <div>
+        {loading && <div className="loader-container">
+      	  <div className="spinner"></div>
+        </div>}
     <section className='Dashboard'>
         <SideBar shrink={shrink} setShrink={setShrink}></SideBar>
         <section className={shrink ? `shrink` : `Page`} >
@@ -133,6 +149,6 @@ const TagIndividualPage = () => {
         
     </section>
         </section>
-    )
+   </div> )
 }
 export default TagIndividualPage

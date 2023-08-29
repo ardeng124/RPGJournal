@@ -14,6 +14,7 @@ const EntryPage = () => {
     const navigate = useNavigate()
     const [editMode, setEditMode] = useState(false)
     const [buttonDisabled, setButtonDisabled] = useState(false)
+    const [loading, setLoading] = useState(false);
 
     const [itemDetails, setItemDetails] = useState({
         content:"",
@@ -74,6 +75,7 @@ const EntryPage = () => {
         setFollowUp(itemDetails.followup.followup)
     }
     const saveEdits = (event) => {
+        if(buttonDisabled) return;
         setButtonDisabled(true)
         setTimeout(() => setButtonDisabled(false),2000)
         if(formInfo.followupCheck == true) {
@@ -94,8 +96,7 @@ const EntryPage = () => {
             }
             if(response.status != 201) {
                 window.alert('error updating')
-                //TODO: make a proper way of showing errors
-
+                setError("Error updating")
             } else {
                 setItemDetails(response.data.entryNew)
                 setEditMode(false)
@@ -104,6 +105,7 @@ const EntryPage = () => {
         })
     }
     const deleteEntry = (event) => {
+        if(buttonDisabled) return;
         setButtonDisabled(true)
         setTimeout(() => setButtonDisabled(false),2000)
         AxiosService.deleteEntry(id).then(response => {
@@ -122,7 +124,8 @@ const EntryPage = () => {
 
    }
     useEffect(() => {
-
+        setLoading(true)
+        setButtonDisabled(true)
         AxiosService.getJournalEntry(id).then(response => {
             if(response.status == 401) {
                 window.alert("Error: Please log in again")
@@ -141,10 +144,16 @@ const EntryPage = () => {
             let arr = []
             response.data.entry.tags.forEach(x =>arr.push({value: x.id, label:x.name}))
             setSelected(arr)
+            setButtonDisabled(false)
+            setLoading(false)
             
         })
     },[])
     return (
+        <div>
+        {loading && <div className="loader-container">
+      	  <div className="spinner"></div>
+        </div>}
         <section className='EntryPage'>
         <SideBar shrink={shrink} setShrink={setShrink}></SideBar>
         <section className={shrink ? `shrink` : `Page`} >
@@ -177,6 +186,7 @@ const EntryPage = () => {
         {followupSet & editMode ? <FollowUpFormEntry updateFn = {updateField} editMode={editMode} itemDetails={itemDetails.followup}/> : <span></span>}
 
         </section>
+        {!loading ? 
         <div className="row buttonSection" >
         <div className="editGroup">
         {editMode && <button className="" onClick={() => cancelEdits()}>Cancel</button>}
@@ -189,12 +199,12 @@ const EntryPage = () => {
         {editMode && <button disabled={buttonDisabled} className="deleteButton" onClick={() => deleteEntry()}> Delete</button>}
         {/* {editMode && <img src={delIcon} className="deleteBtn" onClick={() => deleteEntry()}/> } */}
 
-        </div>
+        </div> : <span></span>}
         
 
         </section>
         </section>
-    )
+    </div>)
 }
 
 export default EntryPage
