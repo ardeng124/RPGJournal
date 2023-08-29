@@ -220,7 +220,16 @@ text-align: left;
 .titleInput {
   font-size: 5.0rem; line-height: 1.2;  letter-spacing: -.1rem;
   text-align: center !important;
-
+}
+.subtitleInput {
+  font-size: 3.0rem; line-height: 1.2;  letter-spacing: -.1rem;
+  text-align: center !important;
+  margin:0px !important;
+}
+.hide {
+  border: none;
+  padding:none;
+  margin:none;
 }
 .buttonSection {
 
@@ -382,6 +391,25 @@ text-align: left;
   transition: 0.3s;
   border:1px solid rgba(97, 97, 97);
 }
+.tagNameChng {
+  position: fixed;
+  right: 20px;
+  top:70vh;
+  margin-left:10px;
+  width:55px;
+  height:55px;
+  cursor: pointer;
+  border:1px solid rgba(97, 97, 97, 0.568);
+  border-radius: 10px;
+  margin:10px;
+  padding:5px;
+ 
+}
+.tagNameChng:hover{
+  background-color: rgb(169, 169, 169);
+  transition: 0.3s;
+  border:1px solid rgba(97, 97, 97);
+}
 .deleteButton {
   background-color: rgb(240, 150, 150);
   color: white;
@@ -401,9 +429,16 @@ text-align: left;
   margin-top:50px;
 
 }
+.tagAddForm {
+  text-align: right;
+}
 
 .searchFormInput {
   width:80%;
+}
+.addTagInput{
+  width:25%;
+  margin:5px;
 }
 .subContent {
   /* max-width: 15rem;; */
@@ -420,18 +455,17 @@ text-align: left;
   margin: auto;
 }
 .tagLi {
-  max-width:25rem;
-  background-color: #fcf7f7;
+  text-align: center;
+  width: 100rem;
   padding:20px;
-  border-radius: 10px;
-  cursor: pointer;
-  border:1px solid rgba(97, 97, 97, 0.568);
-  display: flex;
+  margin-bottom: 0px;
+
 }
 .tagLi p {
   margin:auto;
+  width:100%;
 }
-.tagLi :last-child{
+.tagLi :nth-child(2){
   margin:auto;
   font-weight: 100;
   font-size:small;
@@ -463,6 +497,71 @@ text-align: left;
   margin-bottom:30px;
   text-align: center;
   border-radius:10px;
+}
+.xBtn {
+  display: none;
+  /* width:20px; */
+  /* padding:5px; */
+  padding:10px;
+  height: 30px;
+  text-align: center;
+  line-height: 0px;
+  background-color: rgb(217, 126, 126);
+  color:white;
+  margin-bottom: 0px;
+  margin:auto;
+  /* margin-right: 5px; */
+}
+
+.tagLiDiv:hover .xBtn{
+  display: inline;
+  transition: 0.3s;
+}
+.tagLiDiv:hover .tagEditImg{
+  display: inline;
+  transition: 0.3s;
+}
+.tagLiDiv{
+  max-width:25rem;
+  background-color: #fcf7f7;
+  border-radius: 10px;
+  cursor: pointer;
+  border:1px solid rgba(97, 97, 97, 0.568);
+  display: flex;
+  text-align: center;
+  margin-bottom:10px;
+}
+
+.tagEditImg {
+  /* width:25px; */
+  /* height:25px; */
+  width:28px;
+  height:28px;
+  background-color: white;
+  border-radius: 5px;
+  border:1px solid rgba(97, 97, 97, 0.568);
+  text-align: center;
+  line-height: 0px;
+  margin-bottom: 0px;
+  margin:auto;
+  /* padding:1px; */
+  display: none;
+}
+
+.tagEditInputForm {
+  text-align: center;
+  /* width: 100rem; */
+  padding:20px;
+  margin-bottom: 0px;
+}
+.tagEditInput{
+  text-align: center;
+  width: 100%;
+  padding:20px;
+  margin-bottom: 0px;
+  padding:0px;
+  margin:0px;
+  height:23px !important;
 }
 
 /* .editBtn{

@@ -4,15 +4,18 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate} from "react-router-dom"
 import AxiosService from '../AxiosService';
 import SideBar from '../components/SideBar';
-import createIcon from '../Assets/plus_icon.png';
+import TagItemComponent from '../components/TagItemComponent';
 const TagPage = () => {
   
     const navigate = useNavigate()
     const [shrink, setShrink] = useState(false);
     const [tagList, setTagList] = useState([])
     const [searchVal, setSearchVal] = useState("")
-   
-           
+    const [editMode, setEditMode] = useState(false)
+    const [errorMsg, setError] = useState("")
+    const [tagValue, setTagValue] = useState("")
+    const [buttonDisabled, setButtonDisabled] = useState(false)
+  
     const filterItems = (items, query) => {
        if (!query) {
          return tagList 
@@ -40,6 +43,47 @@ const TagPage = () => {
         })
     }, []);
 
+    const cancelEdits = (event) => {
+        setEditMode(false); 
+        setError(""); 
+    }
+    const addTag = (event) => {
+        setButtonDisabled(true)
+        setTimeout(() => setButtonDisabled(false),2000)
+        //TODO: MAKE BUTTONS DISABLE FOR 2 SECONDS WHEN SENDING REQUESTS TO BACKEND
+        AxiosService.createTag(tagValue).then(response => {
+            const newTag = {
+                name:response.data.name,
+                owner:response.data.owner,
+                id:response.data.id
+            }
+            let newArr = [...tagList, newTag]
+            setTagList(newArr)
+            setTagValue("")
+            setEditMode(false)
+        })
+    }
+    const deleteTag = (id) => {
+        setButtonDisabled(true)
+        setTimeout(() => setButtonDisabled(false),2000)
+        AxiosService.deleteTag(id).then(response => {
+            setTagList(response.data.tags)
+        })
+    }
+
+    const editTag = (id, data) => {
+        setButtonDisabled(true)
+        setTimeout(() => setButtonDisabled(false),2000)
+        AxiosService.editTag(id, data).then(response => {
+            // tagList.forEach((x) => {
+            //     if (x.id == id) {
+            //         x.name = response.data.it.name
+            //     }
+            // })
+            setTagList(response.data.tags)
+        })
+    }
+
     return (
     <section className='Dashboard'>
         <SideBar shrink={shrink} setShrink={setShrink}></SideBar>
@@ -59,9 +103,24 @@ const TagPage = () => {
                         />
                     </form>
                     <ul className='tagItemList'>
-                        {/* use onMouseEnter and onMouseLeave to have events for edit modes */}
-                  {filteredItems.map(item => <li key = {item.id} className='tagLi' onClick={() => entryClicked(item.id)}> <p>{item.name}</p> <p>Notes:{item.entries.length}</p></li>  )}
+
+                  {filteredItems.map(item => <TagItemComponent id = {item.id} editFunc={editTag} key = {item.id} buttonDisabled={buttonDisabled} deleteFunc={deleteTag} entryClickedFunc = {entryClicked} name={item.name} />)}
                     </ul>
+        <div className="row buttonSection" >
+            <div className="editGroup">
+            {editMode && <button disabled={buttonDisabled} className="" onClick={() => cancelEdits()}>Cancel</button>}
+            {editMode ? <button disabled={buttonDisabled}  className="editBtn" onClick={() => addTag()} >Save</button> : <button onClick={() => setEditMode(true)} >New tag</button>}
+            {editMode && <form  className = 'tagAddForm' onSubmit={handleSubmit}>
+                        <input
+                            type="text"
+                            id="header-search"
+                            placeholder="Enter tag name"
+                            className="addTagInput"
+                            value = {tagValue} onChange={(e) => {setTagValue(e.target.value)}}
+                        />
+                    </form>}
+            </div>
+        </div>
         {/* <img src={createIcon} className={shrink ? ` createBtn shrink` : `createBtn`} onClick={() => navigate('/create')}/> */}
 
         {/* <button className={shrink ? ` editBtn shrink` : `editBtn`} onClick={() => navigate('/create')} >Create note</button> */}

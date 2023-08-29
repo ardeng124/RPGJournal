@@ -18,7 +18,7 @@ const FollowupPage = () => {
 
     const filterItemsLvl = (items, query) => {
        if (!query) return items 
-        console.log(query)
+
        
         return items.filter((items) => {
             const itemLvl = items.followup.lvl.toString().toLowerCase()
@@ -28,7 +28,7 @@ const FollowupPage = () => {
      }
      const filterItemsDate = (items, query) => {
         if (!query) return items 
-         console.log(query)
+
         
          return items.filter((items) => {
              const itemName = items.title.toString().toLowerCase()

@@ -69,6 +69,16 @@ const getJournalEntries = async () => {
     }
 }
 
+const getTagJournalEntries = async (id) => {
+    refreshToken()
+    try {
+        const response = await axios.get(serverUrl+`api/tags/${id}`, { headers: { "Authorization": `Bearer ${token}` } })
+        return response 
+    } catch (e){
+        return e.response
+    }
+}
+
 const getFollowupJournalEntries = async () => {
     refreshToken()
     try {
@@ -138,6 +148,7 @@ const deleteEntry = async (id) => {
     }
 }
 const createEntry = async (newEntry) => {
+
     refreshToken()
     let followupItem = {
         followup:newEntry.followupCheck,
@@ -181,6 +192,21 @@ const getTags = async () => {
         return e.response
     }
 }
+const editTag = async (id, data) => {
+    refreshToken()
+    let updatedEntry = {name:data}
+    try {
+        const response2 = await axios.put(serverUrl +`api/tags/${id}`, updatedEntry , { headers: { "Authorization": `Bearer ${token}` } })
+        if (response2.data.status == 409){
+            return response2
+        }
+
+        return response2
+    } catch (e) {
+        return e.response
+    }
+
+}
 
 const deleteTag = async (id) => {
     refreshToken()
@@ -206,6 +232,8 @@ export default {
     deleteEntry,
     getFollowupJournalEntries,
     createTag,
+    editTag,
     getTags,
-    deleteTag
+    deleteTag,
+    getTagJournalEntries
 }

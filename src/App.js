@@ -19,6 +19,7 @@ import CreateNotePage from './screens/CreateNotePage';
 import AboutPage from './screens/AboutPage';
 import FollowupPage from './screens/FollowupPage';
 import TagPage from './screens/TagPage';
+import TagIndividualPage from './screens/TagIndividualPage';
 
 
 
@@ -35,6 +36,7 @@ function App() {
     <Route path="/about" element={<AboutPage />} />
     <Route path="/followup" element={<FollowupPage />} />
     <Route path="/tags" element={<TagPage />} />
+    <Route path="/tags/:id" element={<TagIndividualPage />} />
 
     </Routes>
     

@@ -3,10 +3,6 @@ import {useNavigate, useParams} from "react-router-dom"
 import AxiosService from "../AxiosService";
 import SideBar from '../components/SideBar';
 import FollowUpFormEntry from "../components/FollowUpFormEntry";
-import editIcon from '../Assets/pencilangled.png';
-import cancelIcon from '../Assets/cross_icon.png';
-import delIcon from '../Assets/Trash.png';
-import tickIcon from '../Assets/tick_icon.png';
 import FollowUpComponent from "../components/FollowUpComponent";
 
 import Select from 'react-select';
@@ -17,6 +13,8 @@ const EntryPage = () => {
     const animatedComponents = makeAnimated();
     const navigate = useNavigate()
     const [editMode, setEditMode] = useState(false)
+    const [buttonDisabled, setButtonDisabled] = useState(false)
+
     const [itemDetails, setItemDetails] = useState({
         content:"",
         tags:[],
@@ -48,7 +46,7 @@ const EntryPage = () => {
     }
     
     const updateField = (event) => {
-        console.log(selected)
+
         // which input element is this
         const name = event.target.attributes.name.value
         if (name === "title") {
@@ -76,6 +74,8 @@ const EntryPage = () => {
         setFollowUp(itemDetails.followup.followup)
     }
     const saveEdits = (event) => {
+        setButtonDisabled(true)
+        setTimeout(() => setButtonDisabled(false),2000)
         if(formInfo.followupCheck == true) {
             if(formInfo.followupDate == "null" && (formInfo.followupLvl == "null" || formInfo.followupLvl=="")){
 
@@ -85,9 +85,6 @@ const EntryPage = () => {
         }
         setError(""); 
         let tagArray = []
-        // selected.forEach(x => {
-        //     tagArray.push({name:selected.label, id:selected.value})
-        // })
         selected.forEach(x =>tagArray.push({id: x.value, name:x.label}))
         setFormInfo({...formInfo, tags:tagArray})
         AxiosService.modifyEntry({...formInfo, tags:tagArray}, id).then(response => {
@@ -107,6 +104,8 @@ const EntryPage = () => {
         })
     }
     const deleteEntry = (event) => {
+        setButtonDisabled(true)
+        setTimeout(() => setButtonDisabled(false),2000)
         AxiosService.deleteEntry(id).then(response => {
             if(response.status != 200) {
                 setError("Error deleting")
@@ -183,11 +182,11 @@ const EntryPage = () => {
         {editMode && <button className="" onClick={() => cancelEdits()}>Cancel</button>}
         {/* {editMode && <img src={cancelIcon} className="cancelBtn" onClick={() => cancelEdits()}/>} */}
 
-        {editMode ? <button className="editBtn" onClick={() => saveEdits()} >Save</button> : <button onClick={() => setEditMode(true)} >Edit</button>}
+        {editMode ? <button disabled={buttonDisabled} className="editBtn" onClick={() => saveEdits()} >Save</button> : <button onClick={() => setEditMode(true)} >Edit</button>}
         {/* {editMode ? <img src={tickIcon} className="acceptBtn" onClick={() => saveEdits()} /> : <img className='editBtn' src={editIcon} onClick={() => setEditMode(true)} />} */}
 
         </div>
-        {editMode && <button className="deleteButton" onClick={() => deleteEntry()}> Delete</button>}
+        {editMode && <button disabled={buttonDisabled} className="deleteButton" onClick={() => deleteEntry()}> Delete</button>}
         {/* {editMode && <img src={delIcon} className="deleteBtn" onClick={() => deleteEntry()}/> } */}
 
         </div>

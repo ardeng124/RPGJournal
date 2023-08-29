@@ -26,6 +26,9 @@ router.get('/api/auth/', auth.validate)
 router.get('/api/tags/', tags.getTags)
 router.post('/api/tags/', tags.addTags)
 router.delete('/api/tags/:id', tags.deleteTags)
+router.put('/api/tags/:id', tags.modifyTags)
+
+router.get('/api/tags/:id', journal.getJournalEntriesForTag)
 
 
 module.exports = router 
