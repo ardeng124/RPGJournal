@@ -7,7 +7,7 @@ const journalsSchema = new mongoose.Schema({
   tags: { type : [Object], default:[], ref:'Tags'},
   date: {type: Date, default: Date.now},
   title: {type:String},
-  owner: {type: mongoose.Types.ObjectId, ref: 'User'},
+  owner: {type: mongoose.Types.ObjectId, ref: 'User', index:true},
   followup: {type:Object, default:{'followup':false,'date':'null', 'level':'null'}}
 })
 
@@ -28,11 +28,11 @@ const userSchema = new mongoose.Schema({
   lastName: String, 
   passwordHash: String, 
   email: {type: String, unique: true},
-  entries: [
-    {
-      type: Object,
-      ref: 'Journal'
-    }],
+  // entries: [
+  //   {
+  //     type: Object,
+  //     ref: 'Journal'
+  //   }],
   })
 
 userSchema.set('toJSON', {
@@ -48,7 +48,7 @@ const User = mongoose.model("User", userSchema);
 const tagSchema = new mongoose.Schema({
   name: {type: String, unique:false},
   entryCount: {type: Number},
-  owner: {type: mongoose.Types.ObjectId, ref: 'User'},
+  owner: {type: mongoose.Types.ObjectId, ref: 'User', index:true},
   })
 
   tagSchema.set('toJSON', {

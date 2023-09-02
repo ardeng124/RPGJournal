@@ -4,19 +4,24 @@ const { getTags } = require('./tags')
 const Util = require('./util')
 
 const getJournalEntries = async (request, response) => {
-
     if (request.get('Authorization') == undefined) {
-        return response.status(401).json({status:"unauthenticated"})
+      return response.status(401).json({ status: "unauthenticated" });
     }
+  
     const decodedToken1 = Util.getDecodedToken(Util.getToken(request));
     if (decodedToken1 == null) {
-        return response.status(401).json({status:"unauthenticated"})
+      return response.status(401).json({ status: "unauthenticated" });
     }
-    const userFind = await models.User.findById(decodedToken1.id)
-    const entries = await models.Journal.find({owner:userFind.id})
-        .sort({'date':"desc"})
-    response.json({entries})
-}
+  
+    const userFind = await models.User.findById(decodedToken1.id).select('id');
+    if(userFind == null) return response.status(401).json({ status: "unauthenticated" });
+
+    const entries = await models.Journal.find({ owner: userFind.id })
+      .sort({ 'date': "desc" })
+      .select('content tags date title')
+  
+    response.json({ entries });
+  };
   
 const getJournalEntriesForTag = async (request, response) => {
     if (request.get('Authorization') == undefined) {
@@ -47,44 +52,72 @@ const getJournalEntriesForTag = async (request, response) => {
     response.json({entries,entry})
 }
 const getJournalEntriesFollowup = async (request, response) => {
-
-    if (request.get('Authorization') == undefined) {
-        return response.status(401).json({status:"unauthenticated"})
-    }
-    const decodedToken1 = Util.getDecodedToken(Util.getToken(request));
-    if (decodedToken1 == null) {
-        return response.status(401).json({status:"unauthenticated"})
-    }
-    const userFind = await models.User.findById(decodedToken1.id)
-    const entries = await models.Journal.find({owner:userFind.id})
-        .sort({'date':"desc"})
-    let entries2 = entries.filter(x => x.followup.followup)
-    response.json({entries2})
-}
+    try {
+      if (!request.get('Authorization')) {
+        return response.status(401).json({ status: "unauthenticated" });
+      }
   
-
+      const decodedToken1 = Util.getDecodedToken(Util.getToken(request));
+      if (!decodedToken1) {
+        return response.status(401).json({ status: "unauthenticated" });
+      }
+  
+      const userFind = await models.User.findById(decodedToken1.id);
+    
+      // Ensure proper indexing on owner and followup fields
+      const entries2 = await models.Journal.find({ owner: userFind.id, 'followup.followup': true })
+        .sort({ 'date': "desc" })
+        .select('content tags date title followup') // Select only the necessary fields
+        .lean();
+  
+      response.json({ entries2 });
+    } catch (error) {
+      console.error(error);
+      response.status(500).json({ error: "server error" });
+    }
+  };
+  
+  
 const getJournalEntry = async (request, response) => {
+    try {
+      if (!request.get('Authorization')) {
+        return response.status(401).json({ status: "unauthenticated" });
+      }
+  
+      const decodedToken1 = Util.getDecodedToken(Util.getToken(request));
+      if (!decodedToken1) {
+        return response.status(401).json({ status: "unauthenticated" });
+      }
+  
+      const id = request.params.id;
+  
+      const entry = await models.Journal.findById(id).lean();
+      if (!entry) {
+        return response.status(404).json({ error: "could not locate entry" });
+      }
+  
+      const userFind = await models.User.findById(decodedToken1.id).select('id');
+      entry._id = entry._id.toString();
+      entry.owner = entry.owner.toString();
+  
+      if (entry.owner !== userFind.id) {
+        return response.status(403).json({ error: "forbidden" });
+      }
+  
+      // Convert the entry _id back to a number format if needed
+  
+      const tags = await models.Tag.find({ owner: userFind.id }).lean();
+        tags.map((x) => x.id = x._id.toString())
 
-    if (request.get('Authorization') == undefined) {
-       return response.status(401).json({status:"unauthenticated"})
-    }
-    const decodedToken1 = Util.getDecodedToken(Util.getToken(request));
-    if (decodedToken1 == null) {
-        return response.status(401).json({status:"unauthenticated"})
-    }
 
-    const id = request.params.id
-    const entry = await models.Journal.findById(id, (err) => { 
-        if (err) {
-             response.status(404).json({"error":"could not locate entry"})
-        }
-     }).clone();
-     const userFind = await models.User.findById(decodedToken1.id)
-     if (entry.owner != userFind.id) return response.status(403).json({"error":"forbidden"})
-     const tags = await models.Tag.find({owner:userFind.id})
-     const finalResp = {entry, tags}
-     response.status(200).json(finalResp)
-}
+    //   const tags = userTagIds.filter(tag => entry.tags.includes(tag._id.toString()));
+      const finalResp = { entry, tags };
+      response.status(200).json(finalResp);
+    } catch (error) {
+      console.error(error);
+      response.status(500).json({ error: "server error" });
+    }
+  };
 
 const addJournalEntry = async (request, response) => {
     const body = request.body
@@ -96,13 +129,18 @@ const addJournalEntry = async (request, response) => {
 
     const username = await Util.getDecodedToken(Util.getToken(request)).username
     const userFind = await models.User.findById(decodedToken1.id)
+    if(userFind == null) return response.status(401).json({ status: "unauthenticated" });
+
     if (!body.title) return response.status(400).json({status:"mising title"})
     if (!body.content) return response.status(400).json({status:"mising content"})
     const tagArr = []
+    if(body.tags) {
+
+    
     for (const tag of body.tags) {
         try {
           const currTag = await models.Tag.findById(tag.id);
-          if (userFind.id != currTag.owner.id) {
+          if (userFind.id != currTag.owner._id) {
             return response.status(403).json({ error: "forbidden" });
           }
           tagArr.push(currTag);
@@ -110,6 +148,7 @@ const addJournalEntry = async (request, response) => {
           return response.status(404).json({ error: "could not add tag" });
         }
       }
+    }
     let blankFollowup = {'followup':false,'date':'null', 'level':'null'}
     const entry = new models.Journal({
         title: body.title,
@@ -153,6 +192,7 @@ const modifyJournalEntry = async (request, response) => {
         }
      }).clone();
      const userFind = await models.User.findById(decodedToken1.id)
+     if(userFind == null) return response.status(401).json({ status: "unauthenticated" });
 
     if (entry.owner != userFind.id) return response.status(403).json({error:"forbidden"})
     if (entry.tags) {
@@ -163,7 +203,6 @@ const modifyJournalEntry = async (request, response) => {
                 if (entry.owner != currTag.owner) return // response.status(403).json({error:"forbidden"})
                 tags.push(currTag)
             } catch (e) {
-                console.log(e)
                 return response.status(404).json({error:"could not add tag"})
             }
         })
@@ -194,6 +233,7 @@ const deleteJournalEntry = async (request, response) => {
     if(!id) return response.status(400).json({status:"missing id"})
    
     const userFind = await models.User.findById(decodedToken1.id)
+    if(userFind == null) return response.status(401).json({ status: "unauthenticated" });
 
     const entry = await models.Journal.findById(id, (err) => { 
         if (err) {

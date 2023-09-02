@@ -418,6 +418,7 @@ text-align: left;
 
 .textContent {
   margin-bottom:40px !important;
+  overflow-wrap:break-word;
 }
 
 .searchFormObject {
@@ -444,6 +445,7 @@ text-align: left;
   /* max-width: 15rem;; */
   font-size:small;
   font-weight: 200;
+  overflow-wrap:anywhere;
 }
 .nameColumn {
   max-width:16rem;

@@ -32,12 +32,12 @@ const validateUser = async () => {
         return "valid"
     }
 }
-const logout = () => {
+const logout = async () => {
     localStorage.clear()
     token = ""
     //make cookie instantly expire thus get deleted
     document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;"
-    return "done"
+    return "token deleted"
 }
 const login = async (newUser) => {
     //do some stuff with cookies

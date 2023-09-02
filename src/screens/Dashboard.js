@@ -21,8 +21,6 @@ const Dashboard = () => {
        }
        return journalItems.filter((items) => {
          const itemName = items.title.toString().toLowerCase()
-         
-
          return itemName.includes(query.toLowerCase()) 
        }) 
      }
@@ -37,9 +35,10 @@ const Dashboard = () => {
         setLoading(true)
         AxiosService.getJournalEntries().then(response => {
             if(response.status == 401) {
-                window.alert("Error: Please log in again")
-                navigate('/login')
-            }
+                AxiosService.logout().then((response) => {
+                if (response == "token deleted")  navigate('/login')
+            })
+        }
             response.data.entries.forEach((x,index) => {
                 let date  = new Date (x.date)
                 response.data.entries[index].date = date.toGMTString().substring(0,date.toGMTString().length-3)

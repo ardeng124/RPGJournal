@@ -66,37 +66,69 @@ const deleteTags = async (request,response) => {
     response.status(200).json({tags,updateResult})
 }
 
-
 const modifyTags = async (request, response) => {
-    const body = request.body
+    try {
+      const body = request.body;
+      const id = request.params.id;
+  
+      if (!request.get('Authorization')) {
+        return response.status(401).json({ status: "unauthenticated" });
+      }
+  
+      const decodedToken1 = Util.getDecodedToken(Util.getToken(request));
+      if (!decodedToken1) {
+        return response.status(401).json({ status: "unauthenticated" });
+      }
+  
+      if (!id) {
+        return response.status(400).json({ status: "missing id" });
+      }
+      
+      const userFind = await models.User.findById(decodedToken1.id).lean();
+      userFind.id = userFind._id.toString();
 
-    if (request.get('Authorization') == undefined) {
-        return response.status(401).json({status:"unauthenticated"})
+      const tag = await models.Tag.findOne({ _id: id, owner: userFind.id });
+      if (!tag) {
+        return response.status(404).json({ error: "could not locate tag" });
+      }
+  
+      const newTagData = {
+        name: body.name,
+        entryCount: tag.entryCount,
+        owner: tag.owner,
+        id: tag.id,
+      };
+  
+      // Update the tag
+      tag.name = newTagData.name;
+      const updatedTag = await tag.save()
+    //   const updatedTag = await models.Tag.findByIdAndUpdate(id, newTagData).lean();
+    //   const updatedTag = await models.Tag.updateOne({id:id}, newTagData).lean();
+
+      // Prepare bulk update operations for matching tags in journal entries
+      const bulkOperations = [
+        {
+          updateMany: {
+            filter: { 'tags.id': id },
+            update: { $set: { 'tags.$': newTagData } },
+          },
+        },
+      ];
+  
+      // Execute bulk write
+      const bulkResult = await models.Journal.bulkWrite(bulkOperations);
+  
+      // Fetch updated tags
+      //dont do this. Instead just have frontend update
+    //   const tags = await models.Tag.find({ owner: userFind.id });
+  
+      response.status(200).json({ updatedTag, bulkResult });
+    } catch (error) {
+      console.error(error);
+      response.status(500).json({ error: "server error" });
     }
-    const decodedToken1 = Util.getDecodedToken(Util.getToken(request));
-    const id = request.params.id
-    if(!id) return response.status(400).json({status:"missing id"})
-    
-    const userFind = await models.User.findById(decodedToken1.id)
-
-    const entry = await models.Tag.findById(id, (err) => { 
-        if (err) {
-                response.status(404).json({"error":"could not locate tag"})
-        }
-        }).clone();
-        if (entry.owner != userFind.id) return response.status(403).json({"error":"forbidden"})
-        
-    const newTagData = { name: body.name, entryCount: entry.entryCount, owner: entry.owner, id:entry.id }; // Replace with the new tag data
-    const it = await models.Tag.findByIdAndUpdate(id, newTagData )
-
-    const updateResult = await models.Journal.updateMany(
-        { 'tags.id': entry.id },
-        { $set: { 'tags.$': newTagData } }
-    );
-    const tags = await models.Tag.find({owner:userFind.id})
-
-    response.status(200).json({it, updateResult,tags})
-}
+  };
+  
 module.exports = {
     getTags,
     addTags,

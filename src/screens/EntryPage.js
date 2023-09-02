@@ -140,6 +140,7 @@ const EntryPage = () => {
             setItemDetails(response.data.entry)
             setTags(response.data.tags)
             setInitialState({title:itemDetails.title, content:itemDetails.content, followupCheck:response.data.entry.followup.followup, followupDate:response.data.entry.followup.date, followupLvl:response.data.entry.followup.lvl})
+            setFormInfo({...formInfo, followupCheck:response.data.entry.followup.followup, followupLvl:response.data.entry.followup.lvl, followupDate:response.data.entry.followup.date})
             setFollowUp(response.data.entry.followup.followup)
             let arr = []
             response.data.entry.tags.forEach(x =>arr.push({value: x.id, label:x.name}))

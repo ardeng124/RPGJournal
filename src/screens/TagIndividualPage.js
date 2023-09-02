@@ -7,6 +7,7 @@ import AxiosService from '../AxiosService';
 import SideBar from '../components/SideBar';
 import createIcon from '../Assets/plus_icon.png';
 import editIcon from '../Assets/pencilicon.png';
+import tickIcon from '../Assets/tick_icon.png';
 
 const TagIndividualPage = () => {
     const id = useParams().id
@@ -46,7 +47,6 @@ const TagIndividualPage = () => {
             setTimeout(() => setButtonDisabled(false),2000)
             setLoading(true)
             AxiosService.editTag(id, newName).then(response => {
-                console.log(response)
                 let entryNew = entry
                 entryNew.name=newName
                 SetEntry(entryNew)
@@ -58,7 +58,6 @@ const TagIndividualPage = () => {
                         }
                     })
                 })
-                console.log(newarr)
                 setJournalItems(newarr)
                 setLoading(false)
             })
@@ -139,7 +138,9 @@ const TagIndividualPage = () => {
                 </tbody>
                 </table>
         <button className='hide' disabled={buttonDisabled} onClick={() => navigate('/create')}><img src={createIcon} className={shrink ? ` createBtn shrink` : `createBtn`} /></button>
-        <button className='hide' disabled={buttonDisabled}  onClick={() => editTag()}> <img src={editIcon} className={shrink ? ` tagNameChng shrink` : `tagNameChng`}/> </button>
+
+
+        {editMode ? <button className='hide' disabled={buttonDisabled}  onClick={() => editTag()}> <img src={tickIcon} className={shrink ? ` tagNameChng shrink` : `tagNameChng`}/> </button> : <button className='hide' disabled={buttonDisabled}  onClick={() => editTag()}> <img src={editIcon} className={shrink ? ` tagNameChng shrink` : `tagNameChng`}/> </button>}
 
             </div>
         </section>

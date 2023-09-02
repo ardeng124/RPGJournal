@@ -29,6 +29,7 @@ router.delete('/api/tags/:id', tags.deleteTags)
 router.put('/api/tags/:id', tags.modifyTags)
 
 router.get('/api/tags/:id', journal.getJournalEntriesForTag)
+router.delete('/api/users/delete/journals/delete', auth.deleteUserAndEntries)
 
 
 module.exports = router 

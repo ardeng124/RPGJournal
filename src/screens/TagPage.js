@@ -5,6 +5,7 @@ import { useNavigate} from "react-router-dom"
 import AxiosService from '../AxiosService';
 import SideBar from '../components/SideBar';
 import TagItemComponent from '../components/TagItemComponent';
+
 const TagPage = () => {
   
     const navigate = useNavigate()
@@ -78,12 +79,14 @@ const TagPage = () => {
         setButtonDisabled(true)
         setTimeout(() => setButtonDisabled(false),2000)
         AxiosService.editTag(id, data).then(response => {
-            // tagList.forEach((x) => {
-            //     if (x.id == id) {
-            //         x.name = response.data.it.name
-            //     }
-            // })
-            setTagList(response.data.tags)
+     //dont pull update from backend, just update when you get a 200 response.
+     // TODO: add error checking and error handling
+            let tagListtoReplace = tagList
+            tagListtoReplace.map((x) => {if(x.id == id){
+                x.name = data
+                console.log(x)
+            }})
+            setTagList(tagListtoReplace)
         })
     }
 

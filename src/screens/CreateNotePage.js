@@ -83,8 +83,10 @@ const CreateNotePage = () => {
         setTimeout(() => setButtonDisabled(false),2000)
         setError(""); 
         let tagArray = []
+        if(selected != null) {
         selected.forEach(x =>tagArray.push({id: x.value, name:x.label}))
         setFormInfo({...formInfo, tags:tagArray})
+        }
 
         AxiosService.createEntry({...formInfo, tags:tagArray}).then(response => {
             if(response.status != 201) {

@@ -2,6 +2,7 @@ const models = require('../models')
 const Util = require('./util')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const { model } = require('mongoose')
 
 
 const createUser = async(request, response)  => {
@@ -99,7 +100,27 @@ const loginUser = async(request, response) => {
     .send({ token, username: user.username, name: user.firstName })
 }
 
+const deleteUserAndEntries = async(request, response) => {
+        if (!request.get('Authorization')) {
+          return response.status(401).json({ status: "unauthenticated" });
+        }
+    
+        const decodedToken1 = Util.getDecodedToken(Util.getToken(request));
+        if (!decodedToken1) {
+          return response.status(401).json({ status: "unauthenticated" });
+        }
+
+        const userFind = await models.User.findById(decodedToken1.id).select('id');
+        if(userFind == null) return response.status(401).json({ status: "unauthenticated" });
+        const journal = await models.Journal.deleteMany({owner: userFind.id})
+        const tag = await models.Tag.deleteMany({owner: userFind.id})
+        const user = await models.User.deleteOne({_id:userFind.id})
+        return response.status(200).json({ journal,tag,user});
+
+ 
+}
+
 const getDecodedToken = (token) => {
     return jwt.verify(token, process.env.SECRET)
 }
-module.exports = {getUser, loginUser,createUser, validate}
+module.exports = {getUser, loginUser,createUser, validate, deleteUserAndEntries}

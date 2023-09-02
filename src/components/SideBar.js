@@ -17,8 +17,10 @@ const SideBar = (props) => {
     const sidebarElement = useRef();
     const navigate = useNavigate()
     const logOutFunc = () => {
-        AxiosService.logout()
-        navigate('/')
+        AxiosService.logout().then(response => {
+            if(response == "token deleted")
+            navigate('/')
+        })
     }
     const sidebarActivate = () => {
         if(shrink) {
