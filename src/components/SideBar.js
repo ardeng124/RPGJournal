@@ -11,6 +11,7 @@ import followupImg from '../Assets/followupicon2.png';
 import journalImg from '../Assets/journalicon.png';
 import aboutImg from '../Assets/abouticon.png';
 import tagsImg from '../Assets/tagsicon.png';
+import settingsImg from "../Assets/settingsicon.png"
 
 const SideBar = (props) => {
     const {shrink,setShrink} = props
@@ -40,6 +41,8 @@ const SideBar = (props) => {
         <a onClick={ () => navigate("/followup")}> <img className='sidebarIcon' src={followupImg} />Follow Up</a>
         <a onClick={ () => navigate("/tags")}> <img className='sidebarIcon' src={tagsImg} />Tags</a>
         <a onClick={ () => navigate("/about")}> <img className='sidebarIcon' src={aboutImg} />About</a>
+        <a onClick={ () => navigate("/settings")}> <img className='sidebarIcon' src={settingsImg} />Options</a>
+
         <a className='logoutbtnA'> <button className='logout-button' onClick={() => logOutFunc()}> Log out</button> </a>
 
     </div>

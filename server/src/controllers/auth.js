@@ -101,21 +101,31 @@ const loginUser = async(request, response) => {
 }
 
 const deleteUserAndEntries = async(request, response) => {
-        if (!request.get('Authorization')) {
-          return response.status(401).json({ status: "unauthenticated" });
-        }
+    const body = request.body
+    if(!body) {
+        return response.status(500).json({ error: "Password not provided" })
+    }
+    if (!request.get('Authorization')) {
+        return response.status(401).json({ status: "unauthenticated" });
+    }
+    const decodedToken1 = Util.getDecodedToken(Util.getToken(request));
+    if (!decodedToken1) {
+        return response.status(401).json({ status: "unauthenticated" });
+    }
+    const userFind = await models.User.findById(decodedToken1.id);
+    if(userFind == null) return response.status(401).json({ status: "unauthenticated" });
     
-        const decodedToken1 = Util.getDecodedToken(Util.getToken(request));
-        if (!decodedToken1) {
-          return response.status(401).json({ status: "unauthenticated" });
-        }
-
-        const userFind = await models.User.findById(decodedToken1.id).select('id');
-        if(userFind == null) return response.status(401).json({ status: "unauthenticated" });
+    // const passwordHash = await Util.hashPassword(body.password)
+    const passwordCorrect = await bcrypt.compare(body.password, userFind.passwordHash)
+    if (!passwordCorrect) {
+        return response.status(403).json({ error: "Password incorrect" })
+    }
+    if (passwordCorrect) {
         const journal = await models.Journal.deleteMany({owner: userFind.id})
         const tag = await models.Tag.deleteMany({owner: userFind.id})
         const user = await models.User.deleteOne({_id:userFind.id})
         return response.status(200).json({ journal,tag,user});
+    }
 
  
 }

@@ -220,6 +220,18 @@ const deleteTag = async (id) => {
         return e.response
     }
 }
+
+const wipeUser = async (pwd) => {
+     refreshToken()
+     let ps = {password:pwd}
+     try {
+         const response2 = await axios.post(
+             serverUrl + `api/auth/delete/user`, ps , { headers: { "Authorization": `Bearer ${token}` } })
+         return response2
+     } catch (e) {
+         return e.response
+     }
+}
 export default {
     getJournalEntries,
     getJournalEntry,
@@ -235,5 +247,6 @@ export default {
     editTag,
     getTags,
     deleteTag,
-    getTagJournalEntries
+    getTagJournalEntries,
+    wipeUser
 }

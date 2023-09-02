@@ -94,9 +94,9 @@ const modifyTags = async (request, response) => {
   
       const newTagData = {
         name: body.name,
-        entryCount: tag.entryCount,
         owner: tag.owner,
         id: tag.id,
+        _id:tag._id
       };
   
       // Update the tag
@@ -106,15 +106,32 @@ const modifyTags = async (request, response) => {
     //   const updatedTag = await models.Tag.updateOne({id:id}, newTagData).lean();
 
       // Prepare bulk update operations for matching tags in journal entries
-      const bulkOperations = [
-        {
-          updateMany: {
-            filter: { 'tags.id': id },
-            update: { $set: { 'tags.$': newTagData } },
-          },
+    
+      // const bulkOperations = [
+      //   {
+      //     updateMany: {
+      //       filter: { 'tags.id': id },
+      //       update: { $set: { 'tags.$': newTagData } },
+      //     },
+      //   },
+      // ];
+const bulkOperations = [
+    {
+        updateMany: {
+            filter: {
+                'tags': {
+                    $elemMatch: {
+                        $or: [
+                            { id: id }, // Match by tags.id
+                            { _id: id }, // Match by tags._id
+                        ],
+                    },
+                },
+            },
+            update: { $set: { "tags.$": newTagData } },
         },
-      ];
-  
+    },
+]
       // Execute bulk write
       const bulkResult = await models.Journal.bulkWrite(bulkOperations);
   

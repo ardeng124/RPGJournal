@@ -5,7 +5,7 @@
 }
 
 button:hover {
-  animation: btnHover .5s linear;
+  animation: btnHover .3s linear;
   animation-fill-mode:both;
   animation-direction:alternate;
 }
@@ -17,7 +17,7 @@ button:hover {
   }
 
   to {
-    border-radius:30px;
+    border-radius:20px;
 
   }
 }
@@ -566,6 +566,46 @@ text-align: left;
   height:23px !important;
 }
 
+.deleteAllBtn{
+  background-color: rgb(14, 13, 13);
+  color: rgb(255, 0, 0) ;
+  border:2px solid;
+  border-color: rgb(236, 26, 11) !important;
+  margin: 5px;
+  bottom:0px;
+  top:90%;
+  margin: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  /* margin-left: -20px; */
+}
+.deleteAllBtn:hover {
+
+  color: rgb(255, 0, 0);
+  background-color: black;
+  animation: deleteBtnHover 0.3s ;
+    animation-fill-mode: both;
+      animation-direction: alternate;
+        box-shadow: 5px 5px #888888;
+
+}
+.wipeAccountsection {
+  margin: auto;
+  text-align: center;
+
+}
+
+@keyframes deleteBtnHover {
+  from {
+   scale: 1;
+  }
+
+  to {
+    scale:1.2
+  }
+}
+
 .loader-container {
   width: 100%;
   height: 100vh;
@@ -575,7 +615,6 @@ text-align: left;
   position: absolute;
   background: rgba(246, 242, 242, 0.383);
   z-index: 1;
-
 }
 
 .spinner {

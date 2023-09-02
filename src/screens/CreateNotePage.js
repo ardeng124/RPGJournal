@@ -94,7 +94,9 @@ const CreateNotePage = () => {
                 if (response.data.status == "mising title") setError("Please include a title for the note");
                 
 
-                else window.alert('error creating')
+                else {
+                    setError(response.data.error)
+                }
                 //TODO: make a proper way of showing errors
             } else {
 

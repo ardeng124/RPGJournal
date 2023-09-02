@@ -20,28 +20,28 @@ import AboutPage from './screens/AboutPage';
 import FollowupPage from './screens/FollowupPage';
 import TagPage from './screens/TagPage';
 import TagIndividualPage from './screens/TagIndividualPage';
+import SettingsPage from './screens/SettingsPage';
 
 
 
 function App() {
   return (
-  <Router>
-    <Routes>
-    <Route path="/" element={<HomePage />} />
-    <Route path="/dashboard" element={<Dashboard />} />
-    <Route path="/login" element={<LoginPage />} />
-    <Route path="/signup" element={<SignupPage />} />
-    <Route path="/journal/:id" element={<EntryPage/>} />
-    <Route path="/create" element={<CreateNotePage />} />
-    <Route path="/about" element={<AboutPage />} />
-    <Route path="/followup" element={<FollowupPage />} />
-    <Route path="/tags" element={<TagPage />} />
-    <Route path="/tags/:id" element={<TagIndividualPage />} />
-
-    </Routes>
-    
-  </Router>
-);
+      <Router>
+          <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/journal/:id" element={<EntryPage />} />
+              <Route path="/create" element={<CreateNotePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/followup" element={<FollowupPage />} />
+              <Route path="/tags" element={<TagPage />} />
+              <Route path="/tags/:id" element={<TagIndividualPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+          </Routes>
+      </Router>
+  )
 }
 
 export default App;

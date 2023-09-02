@@ -131,8 +131,8 @@ const addJournalEntry = async (request, response) => {
     const userFind = await models.User.findById(decodedToken1.id)
     if(userFind == null) return response.status(401).json({ status: "unauthenticated" });
 
-    if (!body.title) return response.status(400).json({status:"mising title"})
-    if (!body.content) return response.status(400).json({status:"mising content"})
+    if (!body.title) return response.status(400).json({error:"mising title"})
+    if (!body.content) return response.status(400).json({error:"mising content"})
     const tagArr = []
     if(body.tags) {
 
@@ -149,14 +149,17 @@ const addJournalEntry = async (request, response) => {
         }
       }
     }
+    const tags = tagArr.map((tag) =>
+        Object.assign(tag.toObject(), { id: tag._id })
+    )
     let blankFollowup = {'followup':false,'date':'null', 'level':'null'}
     const entry = new models.Journal({
         title: body.title,
         content: body.content,
-        tags: tagArr, 
+        tags: body.tags ? body.tags : tags,
         date: new Date(),
         owner: userFind.id,
-        followup: body.followup ? body.followup : blankFollowup
+        followup: body.followup ? body.followup : blankFollowup,
     })
     const entryNew = await entry.save()
 
@@ -195,17 +198,19 @@ const modifyJournalEntry = async (request, response) => {
      if(userFind == null) return response.status(401).json({ status: "unauthenticated" });
 
     if (entry.owner != userFind.id) return response.status(403).json({error:"forbidden"})
-    if (entry.tags) {
-        let tags = []
-        entry.tags.forEach(async(tag) => {
-            try {
-                const currTag = models.Tag.findById(tag.id)
-                if (entry.owner != currTag.owner) return // response.status(403).json({error:"forbidden"})
-                tags.push(currTag)
-            } catch (e) {
-                return response.status(404).json({error:"could not add tag"})
-            }
-        })
+   if (entry.tags) {
+    const tags = [];
+
+      for (const tag of entry.tags) {
+        try {
+          const currTag = await models.Tag.findById(tag.id);
+
+          if (entry.owner != currTag.owner)  continue
+          tags.push(currTag);
+        } catch (e) {
+          return response.status(404).json({ error: "could not add tag" });
+        }
+      }
     }
     const entryNew = {
         "title": body.title ? body.title : entry.title,
