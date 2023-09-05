@@ -159,11 +159,6 @@ const EntryPage = () => {
         <SideBar shrink={shrink} setShrink={setShrink}></SideBar>
         <section className={shrink ? `shrink` : `Page`} >
         <div className='topbar'>
-                {/* <div className='row '>
-                    <div className='three columns'>
-                    <p> {AxiosService.getName}</p>
-                    </div>
-                    <div className='five columns centeredTitle '> */}
                     <div className="centeredTitle">
 
                     {editMode ? <input className="titleInput" name ='title' onChange={updateField} defaultValue={itemDetails.title}></input>:  <h1> {itemDetails.title} </h1>}

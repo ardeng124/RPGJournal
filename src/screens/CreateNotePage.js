@@ -114,17 +114,11 @@ const CreateNotePage = () => {
         <section className={shrink ? `shrink` : `Page`} >
         <div className='topbar'>
 
-                {/* <div className='row '>
-                    <div className='three columns'>
-                    <p> {AxiosService.getName}</p>
-                    </div> */}
-                    {/* <div className='five columns centeredTitle '> */}
                     <div className=' centeredTitle '>
                     <input className="titleInput" name ='title' onChange={updateField} placeholder="Title"></input>
 
                     </div>
                 </div>
-        {/* </div> */}
             
         <section className='MainContent'>
         <Select className="SelectTags" value={selected} components={animatedComponents} closeMenuOnSelect={false} placeholder="Tags"

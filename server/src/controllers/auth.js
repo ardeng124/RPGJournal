@@ -2,10 +2,10 @@ const models = require('../models')
 const Util = require('./util')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-const { model } = require('mongoose')
 
 
-const createUser = async(request, response)  => {
+const createUser = async(request, response)  => { 
+    try{
     const body = request.body
     const existingUser = await models.User.findOne({
         "username":body.username
@@ -37,6 +37,10 @@ const createUser = async(request, response)  => {
     response
         .status(200)
         .send({ token, username: user.username, name: user.name })
+    } catch (e) {
+        console.log(e)
+        response.status(500).json({ error: "server error" });
+    }
 }
 const getToken = (request) => {
     const auhorisation = request.get('Authorization')
@@ -74,12 +78,15 @@ const getUser = async (request, response) => {
                     token: match._id
                 })       
             }
-        } catch { }
+        } catch {
+            response.status(500).json({ error: "server error" });
+         }
 
     }
     response.json({status: "unregistered"}) 
 }
 const loginUser = async(request, response) => {
+    try {
     const {username, password} = request.body
     const user = await models.User.findOne({username})
     const passwordCorrect = user === null ? false : await bcrypt.compare(password, user.passwordHash)
@@ -98,9 +105,14 @@ const loginUser = async(request, response) => {
     response
     .status(200)
     .send({ token, username: user.username, name: user.firstName })
+    }catch (e) {
+        console.error(e);
+        response.status(500).json({ error: "server error" });
+    }
 }
 
 const deleteUserAndEntries = async(request, response) => {
+    try {
     const body = request.body
     if(!body) {
         return response.status(500).json({ error: "Password not provided" })
@@ -125,7 +137,13 @@ const deleteUserAndEntries = async(request, response) => {
         const tag = await models.Tag.deleteMany({owner: userFind.id})
         const user = await models.User.deleteOne({_id:userFind.id})
         return response.status(200).json({ journal,tag,user});
-    }
+    } 
+    response.status(500).json({ error: "server error" });
+    }catch (e) {
+        console.error(e);
+        response.status(500).json({ error: "server error" });
+      }
+
 
  
 }

@@ -73,17 +73,8 @@ const FollowupPage = () => {
         <SideBar shrink={shrink} setShrink={setShrink}></SideBar>
         <section className={shrink ? `shrink` : `Page`} >
         <div className='topbar'>
-{/* 
-                <div className='row'>
-                    <div className='five columns'>
-                         */}
-                    <p> {AxiosService.getName}</p>
-                    {/* </div> */}
-                    {/* <div className='five columns'> */}
                         <h1> Come back when... </h1>
                     </div>
-                {/* </div>  */}
-        {/* </div> */}
             
         <section className='MainContent'>
             <div className='innerContent'>

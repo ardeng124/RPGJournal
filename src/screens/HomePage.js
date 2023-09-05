@@ -20,7 +20,6 @@ const HomePage = () => {
             <div className='container'>
                 <div className='row'>
                     <img src={logo}/>
-
                 </div>
                 <div className='row'>
 

@@ -46,8 +46,8 @@ const LoginPage = () => {
         })
     },[])
   return (
-    <section className='LoginPage'>
         <body>
+    <section className='LoginPage'>
             <div className='container'>
         <form onSubmit={formHandler}>
         <div className="row">
@@ -66,8 +66,8 @@ const LoginPage = () => {
         {errorMsg != "" && <p className="errorText"> {errorMsg}</p>}
 
         </div>
-        </body>
     </section>
+        </body>
   )
 }
 export default LoginPage

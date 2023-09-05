@@ -4,7 +4,7 @@ const Util = require('./util')
 
 
 const getTags = async (request, response) => {
-
+  try {
     if (request.get('Authorization') == undefined) {
         return response.status(401).json({status:"unauthenticated"})
     }
@@ -15,10 +15,14 @@ const getTags = async (request, response) => {
     const userFind = await models.User.findById(decodedToken1.id)
     const entries = await models.Tag.find({owner:userFind.id})
     response.json({entries})
+  }catch (e) {
+    console.error(e);
+    response.status(500).json({ error: "server error" });
+  }
 }
   
 const addTags = async (request,response) => {
-
+  try {
     const body = request.body
 
     if (request.get('Authorization') == undefined) {
@@ -35,12 +39,16 @@ const addTags = async (request,response) => {
 
 
     response.status(201).json(entryNew)
+  }catch (e) {
+    console.error(e);
+    response.status(500).json({ error: "server error" });
+  }
 
 }
 
 
 const deleteTags = async (request,response) => {
-
+  try {
     if (request.get('Authorization') == undefined) {
         return response.status(401).json({status:"unauthenticated"})
     }
@@ -64,6 +72,10 @@ const deleteTags = async (request,response) => {
       );
     const tags = await models.Tag.find({owner:userFind.id})
     response.status(200).json({tags,updateResult})
+  }catch (e) {
+    console.error(e);
+    response.status(500).json({ error: "server error" });
+  }
 }
 
 const modifyTags = async (request, response) => {
@@ -103,10 +115,7 @@ const modifyTags = async (request, response) => {
       tag.name = newTagData.name;
       const updatedTag = await tag.save()
     //   const updatedTag = await models.Tag.findByIdAndUpdate(id, newTagData).lean();
-    //   const updatedTag = await models.Tag.updateOne({id:id}, newTagData).lean();
-
-      // Prepare bulk update operations for matching tags in journal entries
-    
+    //   const updatedTag = await models.Tag.updateOne({id:id}, newTagData).lean();    
       // const bulkOperations = [
       //   {
       //     updateMany: {
@@ -115,30 +124,25 @@ const modifyTags = async (request, response) => {
       //     },
       //   },
       // ];
-const bulkOperations = [
-    {
-        updateMany: {
-            filter: {
-                'tags': {
-                    $elemMatch: {
-                        $or: [
-                            { id: id }, // Match by tags.id
-                            { _id: id }, // Match by tags._id
-                        ],
+    const bulkOperations = [
+        {
+            updateMany: {
+                filter: {
+                    'tags': {
+                        $elemMatch: {
+                            $or: [
+                                { id: id }, // Match by tags.id
+                                { _id: id }, // Match by tags._id
+                            ],
+                        },
                     },
                 },
+                update: { $set: { "tags.$": newTagData } },
             },
-            update: { $set: { "tags.$": newTagData } },
         },
-    },
-]
+    ]
       // Execute bulk write
       const bulkResult = await models.Journal.bulkWrite(bulkOperations);
-  
-      // Fetch updated tags
-      //dont do this. Instead just have frontend update
-    //   const tags = await models.Tag.find({ owner: userFind.id });
-  
       response.status(200).json({ updatedTag, bulkResult });
     } catch (error) {
       console.error(error);

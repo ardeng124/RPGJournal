@@ -13,17 +13,10 @@ const AboutPage = () => {
             <SideBar shrink={shrink} setShrink={setShrink}></SideBar>
             <section className={shrink ? `shrink` : `Page`} >
             <div className='topbar'>
-{/* 
-                <div className='row'>
-                    <div className='five columns'>
-                         */}
-                    <p> {AxiosService.getName}</p>
-                    {/* </div> */}
-                    {/* <div className='five columns'> */}
+
                         <h1> About Page </h1>
                     </div>
-                {/* </div>  */}
-        {/* </div> */}
+
                 <section className='maincontent' >
 
                 <div className='row'>

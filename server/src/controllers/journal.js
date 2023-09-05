@@ -1,9 +1,8 @@
 const models = require('../models')
-const auth = require('./auth')
-const { getTags } = require('./tags')
 const Util = require('./util')
 
 const getJournalEntries = async (request, response) => {
+  try {
     if (request.get('Authorization') == undefined) {
       return response.status(401).json({ status: "unauthenticated" });
     }
@@ -21,9 +20,14 @@ const getJournalEntries = async (request, response) => {
       .select('content tags date title')
   
     response.json({ entries });
+  } catch (e) {
+    console.error(e);
+    response.status(500).json({ error: "server error" });
+  }
   };
   
 const getJournalEntriesForTag = async (request, response) => {
+    try {
     if (request.get('Authorization') == undefined) {
         return response.status(401).json({status:"unauthenticated"})
     }
@@ -50,6 +54,11 @@ const getJournalEntriesForTag = async (request, response) => {
             })
         })
     response.json({entries,entry})
+    }
+    catch (e) {
+      console.error(e);
+      response.status(500).json({ error: "server error" });
+    }
 }
 const getJournalEntriesFollowup = async (request, response) => {
     try {
@@ -120,6 +129,8 @@ const getJournalEntry = async (request, response) => {
   };
 
 const addJournalEntry = async (request, response) => {
+    try {
+
     const body = request.body
 
     if (request.get('Authorization') == undefined) {
@@ -171,11 +182,16 @@ const addJournalEntry = async (request, response) => {
     // )
 
     response.status(201).json(entryNew)
+  } catch (e) {
+    console.error(e);
+    response.status(500).json({ error: "server error" });
+  }
 }
 
 const modifyJournalEntry = async (request, response) => {
-    const body = request.body
+  try {
 
+    const body = request.body
 
     if (request.get('Authorization') == undefined) {
         return response.status(401).json({status:"unauthenticated"})
@@ -223,9 +239,14 @@ const modifyJournalEntry = async (request, response) => {
     }
     const it = await models.Journal.findByIdAndUpdate(id, entryNew )
     response.status(201).json({entryNew})
+  } catch (e) {
+      console.error(e);
+      response.status(500).json({ error: "server error" });
+    }
 }
 
 const deleteJournalEntry = async (request, response) => {
+  try {
     if (request.get('Authorization') == undefined) {
         return response.status(401).json({status:"unauthenticated"})
     }
@@ -249,6 +270,10 @@ const deleteJournalEntry = async (request, response) => {
 
     const it = await models.Journal.deleteOne({_id: id})
     response.status(200).json({it})
+  }catch (e) {
+    console.error(e);
+    response.status(500).json({ error: "server error" });
+  }
 }
 
 module.exports = {

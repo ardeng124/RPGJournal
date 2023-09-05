@@ -37,6 +37,7 @@ const SideBar = (props) => {
     <div>
         <img className='hamburger' src={icon} onClick = { () => sidebarActivate() }/>
     <div className='sidebar' ref={sidebarElement}>
+        <a id='sidebarNameText'>{localStorage.getItem("firstName")}</a>
         <a onClick = { () => navigate("/dashboard")}> <img className='sidebarIcon' src={journalImg} />Journal</a>
         <a onClick={ () => navigate("/followup")}> <img className='sidebarIcon' src={followupImg} />Follow Up</a>
         <a onClick={ () => navigate("/tags")}> <img className='sidebarIcon' src={tagsImg} />Tags</a>

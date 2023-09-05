@@ -61,6 +61,21 @@ button:hover {
   padding-top: 100px;
   text-align: center;
 }
+#sidebarNameText {
+  top:0.9em;
+  left:2em;
+  margin:0px !important;
+  position: fixed;
+  text-decoration: none;
+  font-size: 23px !important;
+  color: #bdbbbb !important;
+  display: block;
+  font-weight: 200 !important;
+  transition: 0.3s;
+  white-space: nowrap;
+  z-index:1;
+  cursor:default !important;
+}
 
 .sidebar a {
 
@@ -103,8 +118,8 @@ button:hover {
   /* filter: invert(100%); */
   left:0px;
   position: fixed;
-
 }
+
  .sidebarIcon {
   width:42px;
   height: 42px;

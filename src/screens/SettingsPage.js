@@ -34,7 +34,6 @@ const SettingsPage = () => {
             <SideBar shrink={shrink} setShrink={setShrink}></SideBar>
             <section className={shrink ? `shrink` : `Page`}>
                 <div className="topbar">
-                    <p> {AxiosService.getName}</p>
                     <h1> More options</h1>
                 </div>
 
