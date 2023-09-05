@@ -31,5 +31,7 @@ router.put('/api/tags/:id', tags.modifyTags)
 router.get('/api/tags/:id', journal.getJournalEntriesForTag)
 router.post('/api/auth/delete/user', auth.deleteUserAndEntries)
 
-
+router.get("/*", function (req, res) {
+    res.sendFile("index.html", { root: path.join(__dirname, "../../build/") })
+})
 module.exports = router 
