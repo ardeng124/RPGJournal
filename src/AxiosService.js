@@ -2,7 +2,7 @@ import axios from 'axios'
 import FollowUpFormEntry from './components/FollowUpFormEntry'
 
 
-const serverUrl = "http://localhost:8102/"
+const serverUrl = "/"
 
 var token = document.cookie.substring(6)
 
