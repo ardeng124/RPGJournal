@@ -54,7 +54,6 @@ const TagPage = () => {
     const addTag = (event) => {
         setButtonDisabled(true)
         setTimeout(() => setButtonDisabled(false),2000)
-        //TODO: MAKE BUTTONS DISABLE FOR 2 SECONDS WHEN SENDING REQUESTS TO BACKEND
         AxiosService.createTag(tagValue).then(response => {
             const newTag = {
                 name:response.data.name,
@@ -79,14 +78,15 @@ const TagPage = () => {
         setButtonDisabled(true)
         setTimeout(() => setButtonDisabled(false),2000)
         AxiosService.editTag(id, data).then(response => {
-     //dont pull update from backend, just update when you get a 200 response.
-     // TODO: add error checking and error handling
-            let tagListtoReplace = tagList
-            tagListtoReplace.map((x) => {if(x.id == id){
-                x.name = data
-                console.log(x)
-            }})
-            setTagList(tagListtoReplace)
+            if (response.status !=200) {
+                return setError("Error editing tag")
+            } else {
+                let tagListtoReplace = tagList
+                tagListtoReplace.map((x) => {if(x.id == id){
+                    x.name = data
+                }})
+                setTagList(tagListtoReplace)
+            }
         })
     }
 
@@ -112,6 +112,7 @@ const TagPage = () => {
                             value = {searchVal} onChange={(e) => {setSearchVal(e.target.value)}}
                         />
                     </form>
+                    <p>{errorMsg}</p>
                     <ul className='tagItemList'>
 
                   {filteredItems.map(item => <TagItemComponent id = {item.id} editFunc={editTag} key = {item.id} buttonDisabled={buttonDisabled} deleteFunc={deleteTag} entryClickedFunc = {entryClicked} name={item.name} />)}

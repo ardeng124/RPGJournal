@@ -3,7 +3,10 @@
   margin-right: auto;
 
 }
-
+.LoginPage .container {
+  display: block;
+  top: 30vh;
+}
 button:hover {
   animation: btnHover .3s linear;
   animation-fill-mode:both;

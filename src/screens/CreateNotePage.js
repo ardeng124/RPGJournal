@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {useNavigate, useParams} from "react-router-dom"
+import {useNavigate, useParams, useLocation} from "react-router-dom"
 import AxiosService from "../AxiosService";
 import SideBar from '../components/SideBar';
 import FollowUpFormEntry from "../components/FollowUpFormEntry";
@@ -8,7 +8,7 @@ import makeAnimated from 'react-select/animated';
 
 const CreateNotePage = () => {
     const animatedComponents = makeAnimated();
-
+    const { state } = useLocation();
     const navigate = useNavigate()
     const [initialState, setInitialState] = useState({content:'', title:'', followupCheck:false, followupDate:'null', followupLvl:"null"})
     const [formInfo, setFormInfo] = useState(initialState)
@@ -92,17 +92,19 @@ const CreateNotePage = () => {
             if(response.status != 201) {
                 if (response.data.status == "mising content") setError("Please include content for the note");
                 if (response.data.status == "mising title") setError("Please include a title for the note");
-                
 
-                else {
-                    setError(response.data.error)
-                }
-                //TODO: make a proper way of showing errors
+                setError(response.data.error)
             } else {
 
                 let id = response.data.id
-                navigate(`/journal/${id}`)
+                // navigate(`/journal/${id}`)
                 
+                navigate(
+                    `/journal/${id}`,
+                    {
+                      state: { data: response.data }
+                    }
+                  )
             }
         })
     }

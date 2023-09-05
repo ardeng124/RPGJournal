@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {useNavigate, useParams} from "react-router-dom"
+import {useNavigate, useParams, useLocation} from "react-router-dom"
 import AxiosService from "../AxiosService";
 import SideBar from '../components/SideBar';
 import FollowUpFormEntry from "../components/FollowUpFormEntry";
@@ -11,6 +11,7 @@ import TagListComponent from "../components/TagListComponent";
 
 const EntryPage = () => {
     const animatedComponents = makeAnimated();
+    const location = useLocation();
     const navigate = useNavigate()
     const [editMode, setEditMode] = useState(false)
     const [buttonDisabled, setButtonDisabled] = useState(false)
@@ -34,7 +35,6 @@ const EntryPage = () => {
     const [selected, setSelected] = useState(null);
     
     const [shrink, setShrink] = useState(false);
-    
     const handleChange = (selectedOption) => {
         setSelected(selectedOption);
         setFormInfo({...formInfo, tags:selected})
@@ -111,9 +111,6 @@ const EntryPage = () => {
         AxiosService.deleteEntry(id).then(response => {
             if(response.status != 200) {
                 setError("Error deleting")
-                // window.alert('error deleting')
-                //TODO: make a proper way of showing errors
-
             } else {
                 navigate('/dashboard')
             }
@@ -126,6 +123,10 @@ const EntryPage = () => {
     useEffect(() => {
         setLoading(true)
         setButtonDisabled(true)
+        //todo for later: Get data passed from previous page to avoid more loading times.
+        // if(location != "") {
+        //     setItemDetails(location.state.data)
+        // }
         AxiosService.getJournalEntry(id).then(response => {
             if(response.status == 401) {
                 window.alert("Error: Please log in again")
