@@ -36,7 +36,7 @@ const createUser = async(request, response)  => {
     const token = jwt.sign(userForToken, process.env.SECRET)
     response
         .status(200)
-        .cookie("token",token, 900000, {sameSite:"Lax"})
+        .cookie("token",token, { expires: new Date(Date.now() + 1990000), sameSite:"Lax"})
         .send({ token, username: user.username, name: user.name })
     } catch (e) {
         console.log(e)
@@ -105,7 +105,7 @@ const loginUser = async(request, response) => {
     const token = jwt.sign(userForToken, process.env.SECRET)
     response
     .status(200)
-    .cookie("token",token, 900000, {sameSite:"Lax"})
+    .cookie("token",token, { expires: new Date(Date.now() + 1990000), sameSite:"Lax"})
     .send({ token, username: user.username, name: user.firstName })
     }catch (e) {
         console.error(e);
