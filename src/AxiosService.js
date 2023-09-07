@@ -41,12 +41,11 @@ const logout = async () => {
 }
 const login = async (newUser) => {
     //do some stuff with cookies
-
     try {
         const response2 = await axios.post(serverUrl + "auth/login/", newUser)
         token = response2.data.token
         let expires = new Date(Date.now() + 86400 * 1000).toUTCString()
-        document.cookie = `token=${token}; SameSite=Strict` + expires + ";path=/;"
+        // document.cookie = `token=${token};SameSite=Strict` + expires + ";path=/;"
         localStorage.setItem('firstName',response2.data.name)
         console.log("Logging in")
         return response2
@@ -56,29 +55,6 @@ const login = async (newUser) => {
     }
     
 }
-// const login = async (newUser) => {
-//     //do some stuff with cookies
-
-//     try {
-//         const response2 = await axios.post(serverUrl + "auth/login/", newUser).then(response => {
-//             token = response.data.token
-//             let expires = new Date(Date.now() + 86400 * 1000).toUTCString()
-//             document.cookie = `token=${token}; SameSite=Strict` + expires + ";path=/;"
-//             localStorage.setItem('firstName',response.data.name)
-//             console.log("Logging in")
-          
-//             return response
-//         }).finally(() => {
-
-//             return response2
-//         })
-//     } catch (e){
-
-//         return e.response
-//     }
-    
-// }
-
 
 const getJournalEntries = async () => {
     refreshToken()

@@ -3,7 +3,7 @@ const auth = require('./controllers/auth')
 const journal = require('./controllers/journal')
 const tags = require('./controllers/tags')
 
-
+const path = require('path')
 const router = express.Router()
 router.get('/api/journal/:id', journal.getJournalEntry)
 
@@ -29,13 +29,5 @@ router.post('/api/auth/delete/user', auth.deleteUserAndEntries)
 router.get("/*", function (req, res) {
    res.sendFile("index.html", { root: path.join(__dirname, "../../build/") })
 })
-router.get('/', function(req, res) {
-  res.sendFile('index.html', {root: path.join(__dirname, '../../build/')});
-});
-router.get('/dashboard', function(req, res) {
-  res.sendFile('index.html', {root: path.join(__dirname, '../../build/')});
-});
-router.get('/journal/:id', function(req, res) {
-  res.sendFile('index.html', {root: path.join(__dirname, '../../build/')});
-});
+
 module.exports = router 

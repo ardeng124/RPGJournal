@@ -104,6 +104,7 @@ const loginUser = async(request, response) => {
     const token = jwt.sign(userForToken, process.env.SECRET)
     response
     .status(200)
+    .cookie("token",token, 900000, {SameSite:"Lax"})
     .send({ token, username: user.username, name: user.firstName })
     }catch (e) {
         console.error(e);
