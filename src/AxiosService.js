@@ -4,11 +4,18 @@ import FollowUpFormEntry from './components/FollowUpFormEntry'
 
 const serverUrl = "/"
 
-var token = document.cookie.substring(6)
+var token = ""
 
 var username = ""
 const refreshToken = () => {
-    token = document.cookie.substring(6)
+    // token = document.cookie.substring(6)
+    let cookie = {};
+    document.cookie.split(';').forEach(function(el) {
+        let [key,value] = el.split('=');
+        cookie[key.trim()] = value;
+    })
+    token= cookie["token"];
+    return(cookie['token'])
 }
 //TODO: finish this function
 const refreshLocalName = async () => {
