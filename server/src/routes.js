@@ -38,7 +38,4 @@ router.get('/dashboard', function(req, res) {
 router.get('/journal/:id', function(req, res) {
   res.sendFile('index.html', {root: path.join(__dirname, '../../build/')});
 });
-
-
-
 module.exports = router 
