@@ -23,21 +23,39 @@ const LoginPage = () => {
         }
     }
 
-    const formHandler = (event) => {
-        event.preventDefault()
-        setButtonDisabled(true)
-        setTimeout(() => setButtonDisabled(false),1000)
-        AxiosService.login(formInfo)
-        .then(response => {
-            if(response.status==200) {
-                navigate("/dashboard")
-             } 
-            else if (response.status==401){
-                setError("Invalid username or password")
+    // const formHandler = (event) => {
+    //     event.preventDefault()
+    //     setButtonDisabled(true)
+    //     setTimeout(() => setButtonDisabled(false),1000)
+    //     AxiosService.login(formInfo)
+    //     .then(response => {
+    //         console.log(response)
+    //         console.log("Loading page")
+    //         if(response.status==200) {
+    //             AxiosService.refreshToken()
+    //             navigate("/dashboard")
+    //          } 
+    //         else if (response.status==401){
+    //             setError("Invalid username or password")
 
+    //         }
+    //     })
+    // }
+    const formHandler = async(event) => {
+            event.preventDefault()
+            setButtonDisabled(true)
+            setTimeout(() => setButtonDisabled(false),1000)
+            try {
+                const response = await AxiosService.login(formInfo)
+                console.log('loading page')
+                if(response.status == 200) {
+                    navigate("/dashboard")
+                }
+            } catch (e) {
+                setError('Invalid username or password')
+                setTimeout(() => {setError("")}, 5000)
             }
-        })
-    }
+        }
     useEffect( () => {
         AxiosService.validateUser().then(response => {
             if (response == "valid") {

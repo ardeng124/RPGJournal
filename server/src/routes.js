@@ -5,11 +5,6 @@ const tags = require('./controllers/tags')
 
 
 const router = express.Router()
- 
-// router.get('/', function(req, res) {
-//   res.sendFile('index.html', {root: path.join(__dirname, '../../build/')});
-// });
-
 router.get('/api/journal/:id', journal.getJournalEntry)
 
 router.get('/api/journal/', journal.getJournalEntries)
@@ -30,6 +25,20 @@ router.put('/api/tags/:id', tags.modifyTags)
 
 router.get('/api/tags/:id', journal.getJournalEntriesForTag)
 router.post('/api/auth/delete/user', auth.deleteUserAndEntries)
+
+router.get("/*", function (req, res) {
+   res.sendFile("index.html", { root: path.join(__dirname, "../../build/") })
+})
+router.get('/', function(req, res) {
+  res.sendFile('index.html', {root: path.join(__dirname, '../../build/')});
+});
+router.get('/dashboard', function(req, res) {
+  res.sendFile('index.html', {root: path.join(__dirname, '../../build/')});
+});
+router.get('/journal/:id', function(req, res) {
+  res.sendFile('index.html', {root: path.join(__dirname, '../../build/')});
+});
+
 
 
 module.exports = router 
