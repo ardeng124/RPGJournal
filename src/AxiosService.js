@@ -103,7 +103,7 @@ const register = async (newUser) => {
         // localStorage.setItem('token',token)
         const expiration_date = new Date()
         let expires = new Date(Date.now() + 86400 * 1000).toUTCString()
-        document.cookie = `token=${token}; SameSite=None` + expires + ";path=/;"
+        // document.cookie = `token=${token}; SameSite=None` + expires + ";path=/;"
         localStorage.setItem('username',username)
         return response2
 
