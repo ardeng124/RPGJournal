@@ -5,3 +5,4 @@ This project contains both the backend and frontend for a note taking website. T
 ### Starting project
 To start the project run `npm run devserver` 
 
+A current test build of this project is running at https://rpgjournal-production.up.railway.app/
